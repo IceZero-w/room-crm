@@ -3,35 +3,30 @@ import request from '@/utils/request'
 // 查询角色列表
 export function listRole(query) {
   return request({
-    url: '/system/role/list',
+    // url: '/system/role/list',
+    url: '/api/SysRoles/GetRoleList',
     method: 'get',
     params: query
-  })
-}
-
-// 查询角色详细
-export function getRole(roleId) {
-  return request({
-    url: '/system/role/' + roleId,
-    method: 'get'
   })
 }
 
 // 新增角色
 export function addRole(data) {
   return request({
-    url: '/system/role',
+    // url: '/system/role',
+    url: 'api/SysRoles/AddSysRole',
     method: 'post',
-    data: data
+    data,
   })
 }
 
 // 修改角色
 export function updateRole(data) {
   return request({
-    url: '/system/role',
-    method: 'put',
-    data: data
+    // url: '/system/role',
+    url: 'api/SysRoles/EditRole',
+    method: 'post',
+    data,
   })
 }
 
@@ -40,7 +35,7 @@ export function dataScope(data) {
   return request({
     url: '/system/role/dataScope',
     method: 'put',
-    data: data
+    data,
   })
 }
 
@@ -53,23 +48,37 @@ export function changeRoleStatus(roleId, status) {
   return request({
     url: '/system/role/changeStatus',
     method: 'put',
-    data: data
+    data,
   })
 }
 
 // 删除角色
 export function delRole(roleId) {
   return request({
-    url: '/system/role/' + roleId,
-    method: 'delete'
+    // url: '/system/role/' + roleId,
+    url: '/api/SysRoles/DeleteRole',
+    method: 'post',
+    data,
   })
 }
 
-// 导出角色
-export function exportRole(query) {
+// 获取角色已经关联的菜单列表
+export function getRoleMenuList(query) {
   return request({
-    url: '/system/role/export',
+    url: '/api/SysRoles/GetRoleMenuList',
     method: 'get',
     params: query
   })
 }
+
+// 获取角色已经关联的菜单列表
+export function editRoleMenu(data) {
+  return request({
+    url: '/api/SysRoles/AuthorRoleMenu',
+    method: 'post',
+    data,
+  })
+}
+
+
+

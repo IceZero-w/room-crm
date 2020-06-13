@@ -14,9 +14,6 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(
   config => {
-    if (getToken()) {
-      config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
-    }
     return config
   },
   error => {
@@ -44,7 +41,7 @@ service.interceptors.response.use(res => {
       })
     } else if (code !== 200) {
       Notification.error({
-        title: res.data.msg
+        title: res.data.message
       })
       return Promise.reject('error')
     } else {

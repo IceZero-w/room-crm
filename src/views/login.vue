@@ -2,14 +2,14 @@
   <div class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
       <h3 class="title">若依后台管理系统-登陆</h3>
-      <el-form-item prop="mobile">
-        <el-input v-model="loginForm.mobile" type="text" auto-complete="off" placeholder="手机号">
+      <el-form-item prop="loginAccount">
+        <el-input v-model="loginForm.loginAccount" type="text" auto-complete="off" placeholder="手机号">
           <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
-      <el-form-item prop="password">
+      <el-form-item prop="loginPassword">
         <el-input
-          v-model="loginForm.password"
+          v-model="loginForm.loginPassword"
           type="password"
           auto-complete="off"
           placeholder="密码"
@@ -51,15 +51,15 @@ export default {
   data() {
     return {
       loginForm: {
-        mobile: null,
-        password: null,
+        loginAccount: null,
+        loginPassword: null,
         rememberMe: false,
       },
       loginRules: {
-        mobile: [
+        loginAccount: [
           { required: true, trigger: ['blur', 'change'], pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: '手机号格式不正确' }
         ],
-        password: [
+        loginPassword: [
           { required: true, trigger: ['blur', 'change'], message: '密码不能为空' }
         ],
       },
@@ -81,12 +81,12 @@ export default {
   methods: {
     // 回填上回填写的密码
     getCookie() {
-      const mobile = Cookies.get('mobile');
-      const password = Cookies.get('password');
+      const loginAccount = Cookies.get('loginAccount');
+      const loginPassword = Cookies.get('loginPassword');
       const rememberMe = Cookies.get('rememberMe')
       this.loginForm = {
-        mobile: mobile === undefined ? this.loginForm.mobile : mobile,
-        password: password === undefined ? this.loginForm.password : decrypt(password),
+        loginAccount: loginAccount === undefined ? this.loginForm.loginAccount : loginAccount,
+        loginPassword: loginPassword === undefined ? this.loginForm.loginPassword : decrypt(loginPassword),
         rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
       };
     },
@@ -96,16 +96,19 @@ export default {
         if (valid) {
           this.loading = true;
           if (this.loginForm.rememberMe) {
-            Cookies.set("mobile", this.loginForm.mobile, { expires: 30 });
-            Cookies.set("password", encrypt(this.loginForm.password), { expires: 30 });
+            Cookies.set("loginAccount", this.loginForm.loginAccount, { expires: 30 });
+            Cookies.set("loginPassword", encrypt(this.loginForm.loginPassword), { expires: 30 });
             Cookies.set('rememberMe', this.loginForm.rememberMe, { expires: 30 });
           } else {
-            Cookies.remove("mobile");
-            Cookies.remove("password");
+            Cookies.remove("loginAccount");
+            Cookies.remove("loginPassword");
             Cookies.remove('rememberMe');
           }
+          const params = {
+            ...this.loginForm,
+          };
           this.$store
-            .dispatch('Login', this.loginForm)
+            .dispatch('Login', params)
             .then(() => {
               this.$router.push({ path: this.redirect || '/' });
               this.loading = false;

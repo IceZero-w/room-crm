@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      title: '若依管理系统',
+      title: '环城建设合同管理',
       logo: logoImg
     }
   }

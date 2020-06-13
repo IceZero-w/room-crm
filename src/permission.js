@@ -1,4 +1,5 @@
 // 拦截路由，获取用户信息以及菜单数据
+import Layout from '@/layout/index' // 整个crm框架组件
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'
@@ -9,7 +10,21 @@ import { getToken } from '@/utils/auth'
 NProgress.configure({ showSpinner: false })
 
 const whiteList = ['/login', '/resetPwd', '/auth-redirect', '/bind', '/register']
-
+// 获取按钮权限标识
+const filterBtnPession = (arr) => {
+  let permissionList = [];
+  Array.isArray(arr) && arr.forEach((item) => {
+    // 如果是按钮权限，取出所有的按钮权限标识
+      if (item.loginChildrenList && item.loginChildrenList.length) {
+        Array.isArray(item.loginChildrenList) && item.loginChildrenList.forEach(itemSon => {
+          if (itemSon.menuType === 'B') {
+            permissionList.push(itemSon.menuCode)
+          }
+        })
+      }
+  })
+  return permissionList;
+}
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (getToken()) {
@@ -18,34 +33,26 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      if (store.getters.roles.length === 0) {
-        // 判断当前用户是否已拉取完user_info信息
+      if (store.getters.permissions && store.getters.permissions.length) {
+        // 用户信息已经获取后，在跳转页面，就不需要重新获取用户信息
+        next();
+      } else {
+        // 用户登陆或重刷页面，则重新获取用户菜单、和按钮权限
         store.dispatch('GetInfo').then(res => {
-          // 拉取user_info
-          const roles = res.roles
-          store.dispatch('GenerateRoutes', { roles }).then(accessRoutes => {
-          // 测试 默认静态页面
-          // store.dispatch('permission/generateRoutes', { roles }).then(accessRoutes => {
-            // 根据roles权限生成可访问的路由表
-            router.addRoutes(accessRoutes) // 动态添加可访问路由表
-            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
-          })
+          const myRoutes = res.data || []; // 用户菜单数据
+          const permissionList = filterBtnPession(myRoutes);
+          store.dispatch('setPermissions', permissionList); // 设置按钮权限
+          store.dispatch('GenerateRoutes', myRoutes).then(accessRoutes => {
+              router.addRoutes(accessRoutes) // 动态添加可访问路由表
+              next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+            })
         })
           .catch(err => {
-            store.dispatch('FedLogOut').then(() => {
-              Message.error(err)
+            Message.error(err)
+            store.dispatch('LogOut').then(() => { 
               next({ path: '/' })
             })
           })
-      } else {
-        next()
-        // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
-        // if (hasPermission(store.getters.roles, to.meta.roles)) {
-        //   next()
-        // } else {
-        //   next({ path: '/401', replace: true, query: { noGoBack: true }})
-        // }
-        // 可删 ↑
       }
     }
   } else {

@@ -10,7 +10,7 @@ export default {
     const { value } = binding
     const all_permission = "*:*:*";
     const permissions = store.getters && store.getters.permissions
-
+    if (localStorage.getItem('showAllFlag') === '1') { return } // 如果缓存中showAllFlag为true的时候，全局按钮权限限制
     if (value && value instanceof Array && value.length > 0) {
       const permissionFlag = value
 

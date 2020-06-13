@@ -3,17 +3,20 @@ import request from '@/utils/request'
 // 登录方法
 export function login(data) {
   return request({
-    url: '/login',
-    method: 'post',
-    data: data
+    // url: '/login',
+    url: '/api/Login/Login',
+    method: 'get',
+    params: data
   })
 }
 
 // 获取用户详细信息
-export function getInfo() {
+export function getInfo(data) {
   return request({
-    url: '/getInfo',
-    method: 'get'
+    // url: '/getInfo',
+    url: '/api/Login/GetUserMenuList',
+    method: 'get',
+    params: data
   })
 }
 
@@ -25,18 +28,11 @@ export function logout() {
   })
 }
 
-// 获取验证码
-export function getCodeImg() {
-  return request({
-    url: '/captchaImage',
-    method: 'get'
-  })
-}
-
 // 重置密码
 export function resetPwd(data) {
   return request({
-    url: '/resetPwd',
+    // url: '/resetPwd',
+    url: '/api/SysUsers/RestPassword',
     method: 'post',
     data,
   })
