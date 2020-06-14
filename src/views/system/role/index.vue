@@ -394,13 +394,16 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const roleIds = row.roleId || this.ids;
-      this.$confirm('是否确认删除角色编号为"' + roleIds + '"的数据项?', "警告", {
+      const { roleId } = row;
+      this.$confirm('是否确认删除角色编号为"' + roleId + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delRole(roleIds);
+          const params = {
+            roleId,
+          };
+          return delRole(params);
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");

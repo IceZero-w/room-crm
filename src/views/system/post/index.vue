@@ -343,14 +343,14 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const postIds = row.postId || this.ids;
-      this.$confirm('是否确认删除岗位id为"' + postIds + '"的数据项?', "警告", {
+      const { postId } = row.postId;
+      this.$confirm('是否确认删除岗位id为"' + postId + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
           const params = {
-            postId: postIds,
+            postId,
           };
           return delPost(params);
         }).then(() => {
