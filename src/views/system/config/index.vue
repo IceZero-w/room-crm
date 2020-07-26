@@ -204,13 +204,13 @@ export default {
       // 表单校验
       rules: {
         configName: [
-          { required: true, message: "参数名称不能为空", trigger: "blur" }
+          { required: true, message: "参数名称不能为空", trigger: ["blur","change"] }
         ],
         configKey: [
-          { required: true, message: "参数键名不能为空", trigger: "blur" }
+          { required: true, message: "参数键名不能为空", trigger: ["blur","change"] }
         ],
         configValue: [
-          { required: true, message: "参数键值不能为空", trigger: "blur" }
+          { required: true, message: "参数键值不能为空", trigger: ["blur","change"] }
         ]
       }
     };

@@ -215,10 +215,10 @@ export default {
       // 表单校验
       rules: {
         noticeTitle: [
-          { required: true, message: "公告标题不能为空", trigger: "blur" }
+          { required: true, message: "公告标题不能为空", trigger: ["blur","change"] }
         ],
         noticeType: [
-          { required: true, message: "公告类型不能为空", trigger: "blur" }
+          { required: true, message: "公告类型不能为空", trigger: ["blur","change"] }
         ]
       }
     };

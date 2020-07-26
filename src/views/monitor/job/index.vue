@@ -301,13 +301,13 @@ export default {
       // 表单校验
       rules: {
         jobName: [
-          { required: true, message: "任务名称不能为空", trigger: "blur" }
+          { required: true, message: "任务名称不能为空", trigger: ["blur","change"] }
         ],
         invokeTarget: [
-          { required: true, message: "调用目标字符串不能为空", trigger: "blur" }
+          { required: true, message: "调用目标字符串不能为空", trigger: ["blur","change"] }
         ],
         cronExpression: [
-          { required: true, message: "cron执行表达式不能为空", trigger: "blur" }
+          { required: true, message: "cron执行表达式不能为空", trigger: ["blur","change"] }
         ]
       }
     };

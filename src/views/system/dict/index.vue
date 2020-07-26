@@ -212,10 +212,10 @@ export default {
       // 表单校验
       rules: {
         dictName: [
-          { required: true, message: "字典名称不能为空", trigger: "blur" }
+          { required: true, message: "字典名称不能为空", trigger: ["blur","change"] }
         ],
         dictType: [
-          { required: true, message: "字典类型不能为空", trigger: "blur" }
+          { required: true, message: "字典类型不能为空", trigger: ["blur","change"] }
         ]
       }
     };

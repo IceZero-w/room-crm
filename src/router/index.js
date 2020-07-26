@@ -71,44 +71,101 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/dict',
+    path: '/system',
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'type/data/:dictId(\\d+)',
-        component: (resolve) => require(['@/views/system/dict/data'], resolve),
-        name: 'Data',
-        meta: { title: '字典数据', icon: '' }
+        path: 'user',
+        component: (resolve) => require(['@/views/system/user/index.vue'], resolve),
+        name: '用户管理',
+        meta: { title: '用户管理' }
+      },
+    ]
+  },
+  {
+    path: '/business',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'project/list',
+        component: (resolve) => require(['@/views/business/project/list.vue'], resolve),
+        name: '项目列表',
+        meta: { title: '项目列表' }
+      },
+      {
+        path: 'project/base',
+        component: (resolve) => require(['@/views/business/project/base.vue'], resolve),
+        name: '项目基本信息',
+        meta: { title: '项目基本信息' }
       }
     ]
   },
   {
-    path: '/job',
+    path: '/tool',
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'log',
-        component: (resolve) => require(['@/views/monitor/job/log'], resolve),
-        name: 'JobLog',
-        meta: { title: '调度日志' }
-      }
-    ]
-  },
-  {
-    path: '/gen',
-    component: Layout,
-    hidden: true,
-    children: [
+        path: 'aduitStream/flow-type-list',
+        component: (resoleve) => require(['@/views/tool/aduitStream/flow-type-list'], resoleve),
+        name: '工作流类型管理',
+        meta: { title: '工作流类型管理', icon: '' }
+      },
       {
-        path: 'edit',
-        component: (resolve) => require(['@/views/tool/gen/editTable'], resolve),
-        name: 'GenEdit',
-        meta: { title: '修改生成配置' }
-      }
+        path: 'aduitStream/flow-list',
+        component: (resoleve) => require(['@/views/tool/aduitStream/flow-list'], resoleve),
+        name: '工作流管理',
+        meta: { title: '工作流管理', icon: '' }
+      },
+      {
+        path: 'aduitStream/add-flow-node',
+        component: (resoleve) => require(['@/views/tool/aduitStream/add-flow-node'], resoleve),
+        name: '工作流子节点管理',
+        meta: { title: '工作流子节点管理', icon: '' }
+      },
     ]
   }
+  // {
+  //   path: '/dict',
+  //   component: Layout,
+  //   hidden: true,
+  //   children: [
+  //     {
+  //       path: 'type/data/:dictId(\\d+)',
+  //       component: (resolve) => require(['@/views/system/dict/data'], resolve),
+  //       name: 'Data',
+  //       meta: { title: '字典数据', icon: '' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/job',
+  //   component: Layout,
+  //   hidden: true,
+  //   children: [
+  //     {
+  //       path: 'log',
+  //       component: (resolve) => require(['@/views/monitor/job/log'], resolve),
+  //       name: 'JobLog',
+  //       meta: { title: '调度日志' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/gen',
+  //   component: Layout,
+  //   hidden: true,
+  //   children: [
+  //     {
+  //       path: 'edit',
+  //       component: (resolve) => require(['@/views/tool/gen/editTable'], resolve),
+  //       name: 'GenEdit',
+  //       meta: { title: '修改生成配置' }
+  //     }
+  //   ]
+  // }
 ]
 
 export default new Router({

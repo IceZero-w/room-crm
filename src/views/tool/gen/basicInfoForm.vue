@@ -43,16 +43,16 @@ export default {
     return {
       rules: {
         tableName: [
-          { required: true, message: "请输入表名称", trigger: "blur" }
+          { required: true, message: "请输入表名称", trigger: ["blur","change"] }
         ],
         tableComment: [
-          { required: true, message: "请输入表描述", trigger: "blur" }
+          { required: true, message: "请输入表描述", trigger: ["blur","change"] }
         ],
         className: [
-          { required: true, message: "请输入实体类名称", trigger: "blur" }
+          { required: true, message: "请输入实体类名称", trigger: ["blur","change"] }
         ],
         functionAuthor: [
-          { required: true, message: "请输入作者", trigger: "blur" }
+          { required: true, message: "请输入作者", trigger: ["blur","change"] }
         ]
       }
     };

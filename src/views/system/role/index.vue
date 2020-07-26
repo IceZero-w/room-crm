@@ -227,13 +227,13 @@ export default {
       // 表单校验
       rules: {
         roleName: [
-          { required: true, message: "角色名称不能为空", trigger: "blur" }
+          { required: true, message: "角色名称不能为空", trigger: ["blur","change"] }
         ],
         roleLevel: [
-          { required: true, message: "角色等级不能为空", trigger: "blur" }
+          { required: true, message: "角色等级不能为空", trigger: ["blur","change"] }
         ],
         sort: [
-          { required: true, message: "角色顺序不能为空", trigger: "blur" }
+          { required: true, message: "角色顺序不能为空", trigger: ["blur","change"] }
         ]
       }
     };

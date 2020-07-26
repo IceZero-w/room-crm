@@ -197,13 +197,13 @@ export default {
       // 表单校验
       rules: {
         dictLabel: [
-          { required: true, message: "数据标签不能为空", trigger: "blur" }
+          { required: true, message: "数据标签不能为空", trigger: ["blur","change"] }
         ],
         dictValue: [
-          { required: true, message: "数据键值不能为空", trigger: "blur" }
+          { required: true, message: "数据键值不能为空", trigger: ["blur","change"] }
         ],
         dictSort: [
-          { required: true, message: "数据顺序不能为空", trigger: "blur" }
+          { required: true, message: "数据顺序不能为空", trigger: ["blur","change"] }
         ]
       }
     };

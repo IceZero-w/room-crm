@@ -46,6 +46,16 @@ export function parseTime(time, pattern) {
 	return time_str
 }
 
+// 格式化金额 分转换成元
+export function getPrice(price, toFixed = 2) {
+	return Number(Number(price).toFixed(toFixed));
+}
+
+// 格式化金额 元换成分
+export function setPrice(price) {
+	return price * 10 * 10;
+}
+
 // 表单重置
 export function resetForm(refName) {
 	if (this.$refs[refName]) {

@@ -132,19 +132,19 @@ export default {
     return {
       rules: {
         tplCategory: [
-          { required: true, message: "请选择生成模板", trigger: "blur" }
+          { required: true, message: "请选择生成模板", trigger: ["blur","change"] }
         ],
         packageName: [
-          { required: true, message: "请输入生成包路径", trigger: "blur" }
+          { required: true, message: "请输入生成包路径", trigger: ["blur","change"] }
         ],
         moduleName: [
-          { required: true, message: "请输入生成模块名", trigger: "blur" }
+          { required: true, message: "请输入生成模块名", trigger: ["blur","change"] }
         ],
         businessName: [
-          { required: true, message: "请输入生成业务名", trigger: "blur" }
+          { required: true, message: "请输入生成业务名", trigger: ["blur","change"] }
         ],
         functionName: [
-          { required: true, message: "请输入生成功能名", trigger: "blur" }
+          { required: true, message: "请输入生成功能名", trigger: ["blur","change"] }
         ]
       }
     };

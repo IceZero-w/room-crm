@@ -33,12 +33,12 @@ module.exports = {
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
-        target: `http://307m931w46.wicp.vip:31854`,
+        target: `http://xf20jblc.xiaomy.net`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
         }
-      }
+      },
     },
     disableHostCheck: true
   },

@@ -200,16 +200,16 @@ export default {
       // 表单校验
       rules: {
         menuName: [
-          { required: true, message: "菜单名称不能为空", trigger: "blur" }
+          { required: true, message: "菜单名称不能为空", trigger: ["blur","change"] }
         ],
         menuSort: [
-          { required: true, message: "菜单顺序不能为空", trigger: "blur" }
+          { required: true, message: "菜单顺序不能为空", trigger: ["blur","change"] }
         ],
         routeUrl: [
-          { required: true, message: "路由地址不能为空", trigger: "blur" }
+          { required: true, message: "路由地址不能为空", trigger: ["blur","change"] }
         ],
         menuCode:[
-          { required: true, message: "权限标识不能为空", trigger: "blur" }
+          { required: true, message: "权限标识不能为空", trigger: ["blur","change"] }
         ],
       }
     };

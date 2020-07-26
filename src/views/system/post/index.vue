@@ -196,10 +196,10 @@ export default {
       // 表单校验
       rules: {
         postName: [
-          { required: true, message: "岗位名称不能为空", trigger: "blur" }
+          { required: true, message: "岗位名称不能为空", trigger: ["blur","change"] }
         ],
         sorts: [
-          { required: true, message: "岗位顺序不能为空", trigger: "blur" }
+          { required: true, message: "岗位顺序不能为空", trigger: ["blur","change"] }
         ]
       }
     };

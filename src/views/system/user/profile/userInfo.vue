@@ -36,10 +36,10 @@ export default {
       // 表单校验
       rules: {
         nickName: [
-          { required: true, message: "用户昵称不能为空", trigger: "blur" }
+          { required: true, message: "用户昵称不能为空", trigger: ["blur","change"] }
         ],
         email: [
-          { required: true, message: "邮箱地址不能为空", trigger: "blur" },
+          { required: true, message: "邮箱地址不能为空", trigger: ["blur","change"] },
           {
             type: "email",
             message: "'请输入正确的邮箱地址",
@@ -47,11 +47,11 @@ export default {
           }
         ],
         phonenumber: [
-          { required: true, message: "手机号码不能为空", trigger: "blur" },
+          { required: true, message: "手机号码不能为空", trigger: ["blur","change"] },
           {
             pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
             message: "请输入正确的手机号码",
-            trigger: "blur"
+            trigger: ["blur","change"]
           }
         ]
       }
