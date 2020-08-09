@@ -1,18 +1,18 @@
 import request from '@/utils/request'
 
 // 查询项目列表
-export function listProject(query) {
+export function listProject(data) {
   return request({
-    url: '/monitor/project/list',
+    url: '/api/Project/GetProjectList',
     method: 'get',
-    params: query
+    params: data
   })
 }
 
 // 更新项目列表
 export function updateProject(data) {
   return request({
-    url: '/monitor/project/update',
+    url: '/api/Project/EditProjectInfo',
     method: 'post',
     data
   })
@@ -21,7 +21,7 @@ export function updateProject(data) {
 // 更新项目列表
 export function addProject(data) {
   return request({
-    url: '/monitor/project/add',
+    url: '/api/Project/AddProject',
     method: 'post',
     data
   })
@@ -40,26 +40,46 @@ export function queryProjectBase(data) {
 // 删除项目
 export function delProject(data) {
   return request({
-    url: '/monitor/project/delProject',
+    url: '/api/Project/DeleteProject',
     method: 'post',
     data
   })
 }
+
+// 获取项目分配用户列表
+export function getProjectUserList(data) {
+  return request({
+    url: '/api/Project/GetProjectUserList',
+    method: 'get',
+    params: data
+  })
+}
+
+// 项目分配用户
+export function addProjectUser(data) {
+  return request({
+    url: '/api/Project/AssignPersonnel',
+    method: 'post',
+    data
+  })
+}
+
+// 项目分配用户
+export function delProjectUser(data) {
+  return request({
+    url: '/api/Project/UnbundePrijectUser',
+    method: 'post',
+    data
+  })
+}
+
 
 // 审核项目
 export function aduitProject(data) {
   return request({
-    url: '/monitor/project/aduitProject',
+    url: '/api/Project/ProjectAudit',
     method: 'post',
     data
   })
 }
 
-// 获取项目审核进度详情
-export function queryAduitProjectRecord(data) {
-  return request({
-    url: '/monitor/project/aduitProject',
-    method: 'post',
-    data
-  })
-}

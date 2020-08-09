@@ -22,7 +22,7 @@
           @keyup.enter.native="handleQuery"
           ></el-input>
       </el-form-item>
-      <el-form-item label="项目时间">
+      <!-- <el-form-item label="项目时间">
         <el-date-picker
           v-model="dateRange"
           size="small"
@@ -43,7 +43,7 @@
             :value="item.dictValue"
             ></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -53,13 +53,13 @@
     <el-table v-loading="loading" :data="projectList">
       <el-table-column label="项目编号" prop="projectCode"></el-table-column>
       <el-table-column label="项目名称" prop="projectName"></el-table-column>
-      <el-table-column label="甲方单位名称" prop="jiaName"></el-table-column>
-      <el-table-column label="项目金额" prop="projectPrice">
+      <el-table-column label="甲方单位名称" prop="firstParty"></el-table-column>
+      <el-table-column label="项目金额" prop="projectAmount">
         <template slot-scope="scope">
-          <span>{{ getPrice(scope.row.projectPrice) }}</span>
+          <span>{{ getPrice(scope.row.projectAmount) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" prop="gmtCreate">
+      <el-table-column label="创建时间" prop="createDate">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createDate) }}</span>
         </template>
@@ -171,28 +171,28 @@ export default {
         ...this.queryParams,
         ...this.pagination,
       };
-      // listProject(this.addDateRange(params, this.dateRange)).then(response => {
-      //   this.projectList = response.data;
-      // this.pagination.totalCount = response.totalCount;
-      //   this.loading = false;
-      // });
-      this.projectList = [
-        {
-          projectCode: 1,
-          projectName: '测试',
-          jiaName: '甲方1',
-          projectPrice: 10000,
-          createDate: +new Date(),
-        },
-        {
-          projectCode: 2,
-          projectName: '测试2',
-          jiaName: '甲方222',
-          projectPrice: 104000,
-          createDate: +new Date(),
-        }
-      ];
-      this.loading = false;
+      listProject(this.addDateRange(params, this.dateRange)).then(response => {
+        this.projectList = response.data;
+      this.pagination.totalCount = response.totalCount;
+        this.loading = false;
+      });
+      // this.projectList = [
+      //   {
+      //     projectCode: 1,
+      //     projectName: '测试',
+      //     firstParty: '甲方1',
+      //     projectAmount: 10000,
+      //     createDate: +new Date(),
+      //   },
+      //   {
+      //     projectCode: 2,
+      //     projectName: '测试2',
+      //     firstParty: '甲方222',
+      //     projectAmount: 104000,
+      //     createDate: +new Date(),
+      //   }
+      // ];
+      // this.loading = false;
     },
     // 重置
     resetQuery() {
@@ -211,11 +211,10 @@ export default {
 
     // 查看项目详情
     handleSeeMore(row) {
-      const { projectCode } = row;
       this.$router.push({
         path: './detail',
         query: {
-          projectCode: projectCode,
+          projectInfo: JSON.stringify(row),
         },
       })
     },
@@ -227,32 +226,32 @@ export default {
         path: './base',
         query: {
           projectCode: projectCode,
-          isEdit: true,
+          projectInfo: JSON.stringify(row),
         },
       });
     },
 
     // 审核项目
     handleAduit(row) {
-      const { projectCode } = row;
       this.$router.push({
         path: './base',
         query: {
-          projectCode: projectCode,
-          isAduit: true,
+          projectInfo: JSON.stringify(row),
         },
       });
     },
 
     // 删除
     handleDelete(row) {
-      const { projectCode } = row;
+      const { projectCode, id } = row;
       this.$confirm('是否确认删除项目编号为"' + projectCode + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delProject(projectCode);
+          return delProject({
+            id,
+          });
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");

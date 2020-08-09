@@ -99,6 +99,12 @@ export const constantRoutes = [
         component: (resolve) => require(['@/views/business/project/base.vue'], resolve),
         name: '项目基本信息',
         meta: { title: '项目基本信息' }
+      },
+      {
+        path: 'project/detail',
+        component: (resolve) => require(['@/views/business/project/detail.vue'], resolve),
+        name: '项目详情',
+        meta: { title: '项目详情' }
       }
     ]
   },

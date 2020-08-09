@@ -1,13 +1,7 @@
 <template>
-  <el-dialog :visible="visible" :title="'分配子节点权限用户'" width="800px" @close="closeDialog()">
+  <el-dialog :visible="visible" :title="'分配项目关联用户'" width="800px" @close="closeDialog()">
     <el-form ref="form" :model="form" :rules="rules" label-width="150px">
-      <el-form-item label="分配用户" prop="userId">
-        <!-- <el-select v-model="form.userList">
-          <el-option v-for="(item, index) in userList" :key="index" :label="item.userName" :value="item.userId"></el-option>
-        </el-select> -->
-        <!-- <el-checkbox-group v-model="form.userList">
-          <el-checkbox v-for="(item, index) in userList" :key="index" :label="item.userName" :value="item.userId"></el-checkbox>
-        </el-checkbox-group> -->
+      <el-form-item label="关联用户" prop="userId">
         <template v-if="form.userList && form.userList.length">
           <el-tag class="user-tag" v-for="(item, index) in form.userList" :key="index" closable @close="handleDelete(item)">{{ item.userName || '' }}</el-tag>
         </template>
@@ -31,13 +25,13 @@
 
 <script>
 import { listUser } from "@/api/system/user";
-import { authorNodeUser, getAuthorUserList, deleteNodeUser } from '@/api/tool/aduitStream'
+import { addProjectUser, getProjectUserList, delProjectUser } from '@/api/business/project'
 
 export default {
   props: {
-    flowNodeInfo: {
-      type: Object,
-      default: () => {},
+    projectCode: {
+      type: String,
+      default: '',
     },
     visible: {
       type: Boolean,
@@ -62,14 +56,6 @@ export default {
     };
   },
   watch: {
-    flowNodeInfo: {
-      handler(val) {
-        if (val && val.nodeCode) {
-          this.getAuthorUserListFn();
-        }
-      },
-      deep: true,
-    },
     visible: {
       handler(val) {
         val && this.init();
@@ -79,23 +65,25 @@ export default {
   methods: {
     handleDelete(item) {
       const { id, userName } = item;
-      this.$confirm('是否确认删除子节点用户为"' + userName + '"的数据项?', "警告", {
+      this.$confirm('是否确认删除用户"' + userName + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
           const params = {
-            nodeCode: this.flowNodeInfo.nodeCode,
+            projectCode: this.projectCode,
             id,
           };
-          return deleteNodeUser(params);
+          return delProjectUser(params);
         }).then(() => {
-          this.getAuthorUserListFn();
+          this.getProjectUserListFn();
           this.msgSuccess("删除成功");
+          this.$emit('refreshList')
         }).catch(function() {});
     },
     init() {
       this.getUserList();
+      this.getProjectUserListFn();
     },
     // 获取用户列表
     getUserList() {
@@ -109,14 +97,14 @@ export default {
       );
     },
     // 获取工作流子节点分配的用户
-    getAuthorUserListFn() {
-      const { nodeCode } = this.flowNodeInfo;
+    getProjectUserListFn() {
+      const { projectCode } = this;
       const params = {
-        nodeCode,
+        projectCode,
       };
-      getAuthorUserList(params).then(res => {
+      getProjectUserList(params).then(res => {
         this.form = {
-          userList: res.data,
+          userList: res.data
         }
       })
     },
@@ -133,19 +121,18 @@ export default {
     showAddUserDialog() {
       this.addDialog = true;
     },
-    
-
     // 确认添加用户
     confirmAddUser() {
       const params = {
-        nodeCode: this.flowNodeInfo.nodeCode,
+        projectCode: this.projectCode,
         userId: this.addUserId,
         userName: this.getUseInfoById(this.addUserId).userName,
       };
-      authorNodeUser(params).then(res => {
+      addProjectUser(params).then(res => {
         this.addDialog = false;
         this.msgSuccess("用户添加成功");
-        this.getAuthorUserListFn();
+        this.getProjectUserListFn();
+        this.$emit('refreshList')
       })
     },
   }
