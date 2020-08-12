@@ -83,3 +83,22 @@ export function aduitProject(data) {
   })
 }
 
+
+// 取消审核，让项目可编辑
+export function cancelApply(data) {
+  return request({
+    url: '/api/Project/ProjectCancelAudit',
+    method: 'post',
+    data
+  })
+}
+
+// 获取项目详情
+export function getProjectDetail(data) {
+  return request({
+    url: '/api/Project/GetProjectDetail',
+    method: 'get',
+    params: data,
+  })
+}
+

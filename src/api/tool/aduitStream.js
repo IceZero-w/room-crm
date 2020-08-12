@@ -150,5 +150,3 @@ export function deleteNodeUser(data) {
     data
   })
 }
-
-

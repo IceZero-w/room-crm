@@ -135,7 +135,9 @@
       <el-card class="project-base-box">
         <!-- 按钮操作模块 -->
         <div>
-          <el-button v-if="isAduit" type="danger" @click="handleAduitBtn()" :loading="isRequesting">审批</el-button>
+          <!-- projectForm.nodeCount + 1 !== projectForm.auditStates 表示：审核已完结，不能再进行审核了 -->
+          <el-button v-if="isAduit && (projectForm.nodeCount + 1 !== projectForm.auditStates)" type="danger" @click="handleAduitBtn()" :loading="isRequesting">审批</el-button>
+          <el-button v-if="isAduit" type="primary" @click="cancelApplyFn()" :loading="isRequesting">取消审批</el-button>
           <el-button type="default" @click="goBack()">返回</el-button>
         </div>
       </el-card>      
@@ -146,7 +148,7 @@
 </template>
 
 <script>
-import { updateProject, addProject, queryProjectBase, getProjectUserList, aduitProject } from "@/api/business/project.js";
+import { updateProject, addProject, queryProjectBase, getProjectUserList, aduitProject, cancelApply, getProjectDetail } from "@/api/business/project.js";
 import { getFlowDic } from '@/api/tool/aduitStream.js'
 import aduitDialog from '../aduit-dialog.vue';
 
@@ -160,6 +162,7 @@ export default {
       isAduit: false, // 是否是审核的标识
 
       rules: {}, // 表单规则
+      projectCode: undefined, // 项目code
       projectForm: {}, // 项目表单
       projectStatusList: [], // 审核状态
       projectSettlementStatesListObj: [], // 项目审核状态枚举
@@ -177,9 +180,9 @@ export default {
   },
   methods: {
     init() {
-      const { projectInfo, isAduit } = this.$route.query;
+      const { projectCode, isAduit } = this.$route.query;
       this.isAduit = isAduit;
-      this.projectForm = JSON.parse(projectInfo);
+      this.projectCode = projectCode;
       this.initAssetData();
       this.initRemoteData();
     },
@@ -191,10 +194,22 @@ export default {
     },
     // 初始化远程数据
     initRemoteData() {
-      if (this.projectForm.projectCode) {
+      if (this.projectCode) {
+        this.getProjectDetailFn();
         this.getProjectUserListFn();
       }
     },
+
+    // 获取项目详情
+    getProjectDetailFn() {
+      const params = {
+        projectCode: this.projectCode
+      };
+      getProjectDetail(params).then(res => {
+        this.projectForm = res.data || {};
+      })
+    },
+    
     // 获取项目审核状态枚举
     getProjectSettlementStatesListObj() {
       const data = {
@@ -210,10 +225,10 @@ export default {
           dictLabel: '通过',
           dictValue: 1,
         },
-        {
-          dictLabel: '不通过',
-          dictValue: -1,
-        },
+        // {
+        //   dictLabel: '不通过',
+        //   dictValue: -1,
+        // },
       ];
       this.projectAduitStatusList = data;
     },
@@ -251,10 +266,33 @@ export default {
       aduitProject(params).then(res => {
         this.msgSuccess('审核完成');
         this.visible = false;
-        window.location.reload();
+        this.getProjectDetailFn();
       }).finally(() => {
         this.isRequesting = false;
       });
+    },
+
+    // 取消审核
+    cancelApplyFn() {
+      this.$confirm('你确定要取消审批吗，项目状态将变成可修改状态？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const { projectCode, flowCode, auditStates } = this.projectForm;
+        const params = {
+          projectCode,
+          flowCode,
+          auditStates, // 如果为不通过，则传-1
+          auditUserId: JSON.parse(localStorage.getItem('userInfo')).id,
+        };
+        cancelApply(params).then((res) => {
+          this.$message.success({
+            message: '取消审核成功'
+          });
+          this.$router.back();
+        })
+      })
     },
     // 返回上一页
     goBack() {

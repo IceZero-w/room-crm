@@ -59,6 +59,12 @@
           <span>{{ getPrice(scope.row.projectAmount) }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="项目状态" prop="auditName">
+        <template slot-scope="scope">
+          <span v-if="scope.row.auditStates === 1">制单</span>
+          <span v-else>{{ scope.row.auditName }}(已审核)</span>
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" prop="createDate">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createDate) }}</span>
@@ -211,10 +217,11 @@ export default {
 
     // 查看项目详情
     handleSeeMore(row) {
+      const { projectCode } = row;
       this.$router.push({
         path: './detail',
         query: {
-          projectInfo: JSON.stringify(row),
+          projectCode,
         },
       })
     },
@@ -226,17 +233,17 @@ export default {
         path: './base',
         query: {
           projectCode: projectCode,
-          projectInfo: JSON.stringify(row),
         },
       });
     },
 
     // 审核项目
     handleAduit(row) {
+      const { projectCode } = row;
       this.$router.push({
         path: './detail',
         query: {
-          projectInfo: JSON.stringify(row),
+          projectCode,
           isAduit: true,
         },
       });

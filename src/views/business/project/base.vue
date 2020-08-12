@@ -5,8 +5,8 @@
         <div slot="header" class="project-title">
           <span>项目基础信息</span>
         </div>
-          <el-form-item label="项目编号" v-if="projectForm.projectCode">
-            <div class="ip-w200">{{ projectForm.projectCode }}</div>
+          <el-form-item label="项目编号" v-if="projectCode">
+            <div class="ip-w200">{{ projectCode }}</div>
           </el-form-item>
           <el-form-item label="项目名称" prop="projectName">
             <el-input class="ip-w200" v-model="projectForm.projectName" size="mini"></el-input>
@@ -85,7 +85,7 @@
           </el-form-item>
       </el-card>
 
-      <el-card class="project-base-box" v-if="projectForm.projectCode">
+      <el-card class="project-base-box" v-if="projectCode">
         <div slot="header" class="project-title">
           <span>项目人员信息</span>
         </div>
@@ -135,19 +135,19 @@
       <el-card class="project-base-box">
         <!-- 按钮操作模块 -->
         <div>
-          <el-button type="danger" @click="showDistribProjectUserDailog = true" v-if="projectForm.projectCode">分配项目关联用户</el-button>
-          <el-button type="primary" @click="handelOperate()" :loading="isRequesting">{{ projectForm.projectCode ? '保存' : '新建' }}</el-button>
+          <el-button type="danger" @click="showDistribProjectUserDailog = true" v-if="projectCode">分配项目关联用户</el-button>
+          <el-button type="primary" @click="handelOperate()" :loading="isRequesting">{{ projectCode ? '保存' : '新建' }}</el-button>
           <el-button type="default" @click="goBack()">返回</el-button>
         </div>
       </el-card>      
     </el-form>
     <!-- 分配项目关联用户 -->
-    <distribProjectUserDailog v-if="projectForm.projectCode" :visible.sync="showDistribProjectUserDailog" :projectCode="projectForm.projectCode" @refreshList="getProjectUserListFn"></distribProjectUserDailog>
+    <distribProjectUserDailog v-if="projectCode" :visible.sync="showDistribProjectUserDailog" :projectCode="projectCode" @refreshList="refreshList"></distribProjectUserDailog>
   </div>
 </template>
 
 <script>
-import { updateProject, addProject, queryProjectBase, aduitProject, queryAduitProjectRecord, getProjectUserList } from "@/api/business/project.js";
+import { updateProject, addProject, queryProjectBase, aduitProject, queryAduitProjectRecord, getProjectUserList, getProjectDetail } from "@/api/business/project.js";
 import { getFlowDic } from '@/api/tool/aduitStream.js'
 import distribProjectUserDailog from './distrib-project-user-dailog.vue'
 
@@ -161,6 +161,7 @@ export default {
       isRequesting: false, // 是否再请求中
 
       rules: {}, // 表单规则
+      projectCode: undefined, // 项目code
       projectForm: {}, // 项目表单
       projectStatusList: [], // 审核状态
       projectSettlementStatesListObj: {}, // 项目审核状态枚举
@@ -179,12 +180,10 @@ export default {
   },
   methods: {
     init() {
-      const { projectCode, projectInfo, } = this.$route.query;
-      this.projectForm.projectCode = projectCode;
+      const { projectCode, } = this.$route.query;
+      this.projectCode = projectCode;
       if (!projectCode) {
         this.projectForm.createName = this.$store.state.user.name;
-      } else {
-        this.projectForm = JSON.parse(projectInfo);
       }
       this.initAssetData();
       this.initRemoteData();
@@ -198,9 +197,19 @@ export default {
     },
     // 初始化远程数据
     initRemoteData() {
-      if (this.projectForm.projectCode) {
+      if (this.projectCode) {
+        this.getProjectDetailFn();
         this.getProjectUserListFn();
       }
+    },
+    // 获取项目详情
+    getProjectDetailFn() {
+      const params = {
+        projectCode: this.projectCode
+      };
+      getProjectDetail(params).then(res => {
+        this.projectForm = res.data || {};
+      })
     },
     // 初始化表单规则
     initRules() {
@@ -275,7 +284,7 @@ export default {
     handleUpdate(params) {
       updateProject(params).then(response => {
         this.msgSuccess("修改成功");
-        this.$router.back();
+        this.getProjectDetailFn();
       }).finally(() => {
         this.isRequesting = false;
       });
@@ -289,6 +298,11 @@ export default {
         this.isRequesting = false;
       });
     },
+
+    refreshList() {
+      this.getProjectDetailFn();
+    },
+
     // 返回上一页
     goBack() {
       this.$router.back();
