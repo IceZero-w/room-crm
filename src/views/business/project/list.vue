@@ -71,7 +71,7 @@
               type="text"
               icon="el-icon-search"
               @click="handleSeeMore(scope.row)"
-            >查看</el-button>
+            >详情</el-button>
           <el-button
               size="mini"
               type="text"
@@ -82,15 +82,15 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-          >删除</el-button>
-          <el-button
-            size="mini"
-            type="text"
             icon="el-icon-aim"
             @click="handleAduit(scope.row)"
           >审核</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -234,9 +234,10 @@ export default {
     // 审核项目
     handleAduit(row) {
       this.$router.push({
-        path: './base',
+        path: './detail',
         query: {
           projectInfo: JSON.stringify(row),
+          isAduit: true,
         },
       });
     },

@@ -70,30 +70,30 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/system',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: 'user',
-        component: (resolve) => require(['@/views/system/user/index.vue'], resolve),
-        name: '用户管理',
-        meta: { title: '用户管理' }
-      },
-    ]
-  },
+  // {
+  //   path: '/system',
+  //   component: Layout,
+  //   hidden: true,
+  //   children: [
+  //     {
+  //       path: 'user',
+  //       component: (resolve) => require(['@/views/system/user/index.vue'], resolve),
+  //       name: '用户管理',
+  //       meta: { title: '用户管理' }
+  //     },
+  //   ]
+  // },
   {
     path: '/business',
     component: Layout,
     hidden: true,
     children: [
-      {
-        path: 'project/list',
-        component: (resolve) => require(['@/views/business/project/list.vue'], resolve),
-        name: '项目列表',
-        meta: { title: '项目列表' }
-      },
+      // {
+      //   path: 'project/list',
+      //   component: (resolve) => require(['@/views/business/project/list.vue'], resolve),
+      //   name: '项目列表',
+      //   meta: { title: '项目列表' }
+      // },
       {
         path: 'project/base',
         component: (resolve) => require(['@/views/business/project/base.vue'], resolve),
@@ -113,18 +113,18 @@ export const constantRoutes = [
     component: Layout,
     hidden: true,
     children: [
-      {
-        path: 'aduitStream/flow-type-list',
-        component: (resoleve) => require(['@/views/tool/aduitStream/flow-type-list'], resoleve),
-        name: '工作流类型管理',
-        meta: { title: '工作流类型管理', icon: '' }
-      },
-      {
-        path: 'aduitStream/flow-list',
-        component: (resoleve) => require(['@/views/tool/aduitStream/flow-list'], resoleve),
-        name: '工作流管理',
-        meta: { title: '工作流管理', icon: '' }
-      },
+      // {
+      //   path: 'aduitStream/flow-type-list',
+      //   component: (resoleve) => require(['@/views/tool/aduitStream/flow-type-list'], resoleve),
+      //   name: '工作流类型管理',
+      //   meta: { title: '工作流类型管理', icon: '' }
+      // },
+      // {
+      //   path: 'aduitStream/flow-list',
+      //   component: (resoleve) => require(['@/views/tool/aduitStream/flow-list'], resoleve),
+      //   name: '工作流管理',
+      //   meta: { title: '工作流管理', icon: '' }
+      // },
       {
         path: 'aduitStream/add-flow-node',
         component: (resoleve) => require(['@/views/tool/aduitStream/add-flow-node'], resoleve),

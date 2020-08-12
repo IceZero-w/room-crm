@@ -102,7 +102,7 @@
           <span>项目结算信息</span>
         </div>
         <el-form-item label="结算状态" prop="settlementStates">
-          <div>{{ projectSettlementStatesListObj[projectForm.settlementStates] }}</div>
+          <div>{{ projectSettlementStatesListObj[projectForm.settlementStates] || '--' }}</div>
         </el-form-item>
         <el-form-item label="结算金额" prop="auditStates">
           <div>{{ projectForm.projectSettlementAmount || '--' }}</div>
@@ -163,7 +163,7 @@ export default {
       rules: {}, // 表单规则
       projectForm: {}, // 项目表单
       projectStatusList: [], // 审核状态
-      projectSettlementStatesListObj: [], // 项目审核状态枚举
+      projectSettlementStatesListObj: {}, // 项目审核状态枚举
       flowCodeList: [], // 项目工作流列表
 
       showDistribProjectUserDailog: false, // 分配项目相关人员弹窗

@@ -6,9 +6,9 @@
           <el-option v-for="(item, index) in aduitStatusList" :key="index" :label="item.dictLabel" :value="item.dictValue"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="审核备注">
+      <!-- <el-form-item label="审核备注">
         <el-input type="textarea" v-model="auditForm.remark"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label=" ">
         <el-button type="primary" @click="handleAduit()">确定</el-button>
         <el-button type="default" @click="closeDialog()">取消</el-button>

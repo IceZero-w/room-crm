@@ -102,7 +102,7 @@
           <span>项目结算信息</span>
         </div>
         <el-form-item label="结算状态" prop="settlementStates">
-          <div>{{ projectSettlementStatesListObj[projectForm.settlementStates] }}</div>
+          <div>{{ projectSettlementStatesListObj[projectForm.settlementStates] || '--' }}</div>
         </el-form-item>
         <el-form-item label="结算金额" prop="auditStates">
           <div>{{ projectForm.projectSettlementAmount || '--' }}</div>
@@ -135,7 +135,7 @@
       <el-card class="project-base-box">
         <!-- 按钮操作模块 -->
         <div>
-          <el-button type="danger" @click="handleAduitBtn()" :loading="isRequesting">审批</el-button>
+          <el-button v-if="isAduit" type="danger" @click="handleAduitBtn()" :loading="isRequesting">审批</el-button>
           <el-button type="default" @click="goBack()">返回</el-button>
         </div>
       </el-card>      
@@ -157,6 +157,7 @@ export default {
   data() {
     return {
       isRequesting: false, // 是否再请求中
+      isAduit: false, // 是否是审核的标识
 
       rules: {}, // 表单规则
       projectForm: {}, // 项目表单
@@ -176,7 +177,8 @@ export default {
   },
   methods: {
     init() {
-      const { projectInfo } = this.$route.query;
+      const { projectInfo, isAduit } = this.$route.query;
+      this.isAduit = isAduit;
       this.projectForm = JSON.parse(projectInfo);
       this.initAssetData();
       this.initRemoteData();
@@ -206,11 +208,11 @@ export default {
       const data = [
         {
           dictLabel: '通过',
-          dictValue: 0,
+          dictValue: 1,
         },
         {
           dictLabel: '不通过',
-          dictValue: 1,
+          dictValue: -1,
         },
       ];
       this.projectAduitStatusList = data;
@@ -237,17 +239,19 @@ export default {
     },
     // 弹窗审核后点击 ‘确定’的事件
     handleAduit(aduitForm) {
+      const { status, remark } = aduitForm
       const { projectCode, flowCode, auditStates } = this.projectForm;
       const params = {
-        ...this.aduitForm,
         projectCode,
         flowCode,
-        auditStates,
+        auditStates: status === -1 ? -1 : auditStates, // 如果为不通过，则传-1
+        remark,
+        auditUserId: JSON.parse(localStorage.getItem('userInfo')).id,
       };
       aduitProject(params).then(res => {
         this.msgSuccess('审核完成');
         this.visible = false;
-        this.$router.back();
+        window.location.reload();
       }).finally(() => {
         this.isRequesting = false;
       });

@@ -15,7 +15,7 @@ import router from './router'
 import permission from './directive/permission'
 
 import './assets/icons' // icon
-// import './permission' // permission control
+import './permission' // permission control
 import { getDicts } from "@/api/system/dict/data";
 import { getConfigKey } from "@/api/system/config";
 import { parseTime, getPrice, setPrice, resetForm, addDateRange, selectDictLabel, download, handleTree } from "@/utils/ruoyi";
