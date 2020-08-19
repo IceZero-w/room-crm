@@ -91,8 +91,8 @@ export const constantRoutes = [
       // {
       //   path: 'project/list',
       //   component: (resolve) => require(['@/views/business/project/list.vue'], resolve),
-      //   name: '项目列表',
-      //   meta: { title: '项目列表' }
+      //   name: '项目管理',
+      //   meta: { title: '项目管理' }
       // },
       {
         path: 'project/base',
@@ -105,7 +105,26 @@ export const constantRoutes = [
         component: (resolve) => require(['@/views/business/project/detail.vue'], resolve),
         name: '项目详情',
         meta: { title: '项目详情' }
-      }
+      },
+
+      // {
+      //   path: 'contract/list',
+      //   component: (resolve) => require(['@/views/business/contract/list.vue'], resolve),
+      //   name: '合同管理',
+      //   meta: { title: '合同管理' }
+      // },
+      {
+        path: 'contract/base',
+        component: (resolve) => require(['@/views/business/contract/base.vue'], resolve),
+        name: '项目基本信息',
+        meta: { title: '项目基本信息' }
+      },
+      {
+        path: 'contract/detail',
+        component: (resolve) => require(['@/views/business/contract/detail.vue'], resolve),
+        name: '合同详情',
+        meta: { title: '合同详情' }
+      },
     ]
   },
   {

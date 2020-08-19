@@ -147,7 +147,7 @@
 </template>
 
 <script>
-import { updateProject, addProject, queryProjectBase, aduitProject, queryAduitProjectRecord, getProjectUserList, getProjectDetail } from "@/api/business/project.js";
+import { updateProject, addProject, aduitProject, queryAduitProjectRecord, getProjectUserList, getProjectDetail } from "@/api/business/project.js";
 import { getFlowDic } from '@/api/tool/aduitStream.js'
 import distribProjectUserDailog from './distrib-project-user-dailog.vue'
 

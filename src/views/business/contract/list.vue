@@ -1,68 +1,46 @@
 <template>
-  <!-- 项目列表 -->
+  <!-- 合同列表 -->
   <div class="app-container">
     <el-form :model="queryParams" ref="queryParams" :inline="true">
-      <el-form-item label="项目名称">
+      <el-form-item label="合同名称">
         <el-input
-          v-model="queryParams.projectName"
-          placeholder="项目名称"
+          v-model="queryParams.contractName"
+          placeholder="合同名称"
           clearable
           size="small"
           style="width: 240px"
           @keyup.enter.native="handleQuery"
           ></el-input>
       </el-form-item>
-      <el-form-item label="项目编号">
+      <el-form-item label="合同编号">
         <el-input
-          v-model.number="queryParams.projectCode"
-          placeholder="项目编号"
+          v-model.number="queryParams.contractCode"
+          placeholder="合同编号"
           clearable
           size="small"
           style="width: 240px"
           @keyup.enter.native="handleQuery"
           ></el-input>
       </el-form-item>
-      <!-- <el-form-item label="项目时间">
-        <el-date-picker
-          v-model="dateRange"
-          size="small"
-          style="width: 240px"
-          type="datetimerange"
-          range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          @keyup.enter.native="handleQuery"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item label="审核状态">
-        <el-select style="width: 240px" v-model="queryParams.projectAduitProgress" placeholder="请选择">
-          <el-option
-            v-for="(item, index) in projectAduitProgressList"
-            :key="index"
-            :label="item.dictLabel"
-            :value="item.dictValue"
-            ></el-option>
-        </el-select>
-      </el-form-item> -->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-        <el-button type="success" icon="el-icon-add" size="mini" @click="handleAdd">添加新项目</el-button>
+        <el-button type="success" icon="el-icon-add" size="mini" @click="handleAdd">添加新合同</el-button>
       </el-form-item>
     </el-form>
     <el-table v-loading="loading" :data="projectList">
-      <el-table-column label="项目编号" prop="projectCode"></el-table-column>
-      <el-table-column label="项目名称" prop="projectName"></el-table-column>
-      <el-table-column label="甲方单位名称" prop="firstParty"></el-table-column>
-      <el-table-column label="项目金额" prop="projectAmount">
+      <el-table-column label="关联项目编号" prop="projectCode"></el-table-column>
+      <el-table-column label="合同编号" prop="contractCode"></el-table-column>
+      <el-table-column label="合同名称" prop="contractName"></el-table-column>
+      <el-table-column label="合同类型" prop="contractType" :formatter="isEnableFormat"></el-table-column>
+      <el-table-column label="合同金额" prop="contractMoney">
         <template slot-scope="scope">
-          <span>{{ getPrice(scope.row.projectAmount) }}</span>
+          <span>{{ getPrice(scope.row.contractMoney) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="项目状态" prop="auditName">
+      <el-table-column label="是否含税" prop="isTax">
         <template slot-scope="scope">
-          <span v-if="scope.row.auditStates === 1">制单</span>
-          <span v-else>{{ scope.row.auditName }}(已审核)</span>
+          <span>{{ scope.row.isTax ? '是' : '否' }}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" prop="createDate">
@@ -70,27 +48,33 @@
           <span>{{ parseTime(scope.row.createDate) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" prop="projectName">
+      <el-table-column label="签约时间" prop="signerDate">
         <template slot-scope="scope">
-          <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-search"
-              @click="handleSeeMore(scope.row)"
-            >详情</el-button>
+          <span>{{ parseTime(scope.row.signerDate) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="合同状态" prop="auditName">
+        <template slot-scope="scope">
+          <span v-if="scope.row.auditStates === 1">业务员审核</span>
+          <span v-else>{{ scope.row.auditName }}(已审核)</span>
+        </template>
+      </el-table-column>
+      
+      <el-table-column label="操作">
+        <template slot-scope="scope">
           <el-button
               size="mini"
               type="text"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
             >编辑</el-button>
-            <br>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-aim"
             @click="handleAduit(scope.row)"
           >审核</el-button>
+          <br>
           <el-button
             size="mini"
             type="text"
@@ -110,7 +94,7 @@
   </div>
 </template>
 <script>
-import { listProject, delProject } from "@/api/business/project.js";
+import { listContract, delContract } from "@/api/business/contract.js";
 
 export default {
   data() {
@@ -123,10 +107,9 @@ export default {
         pageSize: 10,
         totalCount: 0,
       }, // 分页数据
-      projectAduitProgressList: [], // 项目审核状态枚举
       dateRange: [], // 时间范围表单值
 
-      projectList: [], // 项目列表
+      projectList: [], // 合同列表
     }
   },
   created() {
@@ -139,33 +122,36 @@ export default {
     },
     // 初始化静态数据
     initAssetData() {
-      this.getProjectAduitProgressList(); // 获取项目审核状态枚举
+      this.getContractTypeList();
     },
     // 初始化远程数据
     initRemoteData() {
       this.handleQuery();
     },
-    // 获取项目审核状态枚举
-    getProjectAduitProgressList() {
+    // 获取合同类型列表
+    getContractTypeList() {
       const data = [
         {
-          dictLabel: '制单',
-          dictValue: 0,
-        },
-        {
-          dictLabel: '项目经理已审核',
+          dictLabel: '劳务合同',
           dictValue: 1,
         },
         {
-          dictLabel: '财务经理已审核',
+          dictLabel: '材料合同',
           dictValue: 2,
         },
         {
-          dictLabel: '董事长已审核',
+          dictLabel: '租赁合同',
           dictValue: 3,
         },
-      ];
-      this.projectAduitProgressList = data;
+        {
+          dictLabel: '其他合同',
+          dictValue: 4,
+        },
+      ]
+      this.contractTypeList = data;
+    },
+    isEnableFormat(row, column) {
+      return this.selectDictLabel(this.contractTypeList, row.contractType);
     },
     // 搜索
     handleQuery() {
@@ -177,7 +163,7 @@ export default {
         ...this.queryParams,
         ...this.pagination,
       };
-      listProject(this.addDateRange(params, this.dateRange)).then(response => {
+      listContract(params).then(response => {
         this.projectList = response.data;
       this.pagination.totalCount = response.totalCount;
         this.loading = false;
@@ -188,7 +174,7 @@ export default {
       this.queryParams = {};
       this.handleQuery();
     },
-    // 添加项目
+    // 添加合同
     handleAdd() {
       this.$router.push({
         path: './base',
@@ -198,35 +184,24 @@ export default {
       });
     },
 
-    // 查看项目详情
-    handleSeeMore(row) {
-      const { projectCode } = row;
-      this.$router.push({
-        path: './detail',
-        query: {
-          projectCode,
-        },
-      })
-    },
-
-    // 编辑项目基本信息
+    // 编辑合同基本信息
     handleUpdate(row) {
-      const { projectCode } = row;
+      const { contractCode } = row;
       this.$router.push({
         path: './base',
         query: {
-          projectCode: projectCode,
+          contractCode,
         },
       });
     },
 
-    // 审核项目
+    // 审核合同
     handleAduit(row) {
-      const { projectCode } = row;
+      const { contractCode } = row;
       this.$router.push({
-        path: './detail',
+        path: './base',
         query: {
-          projectCode,
+          contractCode,
           isAduit: true,
         },
       });
@@ -234,14 +209,14 @@ export default {
 
     // 删除
     handleDelete(row) {
-      const { projectCode, id } = row;
-      this.$confirm('是否确认删除项目编号为"' + projectCode + '"的数据项?', "警告", {
+      const { contractCode } = row;
+      this.$confirm('是否确认删除合同编号为"' + contractCode + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delProject({
-            id,
+          return delContract({
+            contractCode,
           });
         }).then(() => {
           this.getList();

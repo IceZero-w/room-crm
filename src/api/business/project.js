@@ -27,15 +27,6 @@ export function addProject(data) {
   })
 }
 
-// 获取项目的基本信息
-export function queryProjectBase(data) {
-  return request({
-    url: '/monitor/project/queryProjectBase',
-    method: 'post',
-    data
-  })
-}
-
 
 // 删除项目
 export function delProject(data) {
