@@ -132,6 +132,14 @@
         </el-form-item>
       </el-card>
 
+      <!-- 合同管理、发票管理、材料管理 -->
+      <el-card class="project-base-box" v-if="!isAduit">
+        <el-tabs v-model="activeName" type="card">
+          <el-tab-pane v-for="(item, index) in activeList" :key="index" :label="item.label" :name="item.name"></el-tab-pane>
+        </el-tabs>
+        <component :is="activeName" :key="activeName" :projectCode="projectCode"></component>
+      </el-card>
+
       <el-card class="project-base-box">
         <!-- 按钮操作模块 -->
         <div>
@@ -151,10 +159,17 @@
 import { updateProject, addProject, getProjectUserList, aduitProject, cancelApply, getProjectDetail } from "@/api/business/project.js";
 import { getFlowDic } from '@/api/tool/aduitStream.js'
 import aduitDialog from '../aduit-dialog.vue';
+import tabContract from './tab-contract.vue';
+import tabInvoice from './tab-invoice.vue';
+import tabMaterial from './tab-material.vue';
+
 
 export default {
   components: {
     aduitDialog,
+    tabContract,
+    tabInvoice,
+    tabMaterial,
   },
   data() {
     return {
@@ -173,6 +188,22 @@ export default {
 
       visible: false, // 审核结果
       projectAduitStatusList: [], // 审核可选项
+
+      activeName: 'tab-contract', // tab选择的activeName
+      activeList: [
+        {
+          label: '合同管理',
+          name: 'tab-contract',
+        },
+        {
+          label: '发票管理',
+          name: 'tab-invoice',
+        },
+        {
+          label: '材料管理',
+          name: 'tab-material',
+        },
+      ],
     }
   },
   created() {

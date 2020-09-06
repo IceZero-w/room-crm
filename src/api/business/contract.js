@@ -72,3 +72,57 @@ export function getContractDetail(data) {
     params: data,
   })
 }
+
+/* 子合同模块 */
+// 获取子合同列表
+export function getSubContractList(data) {
+  return request({
+    url: '/api/SubContract/GetSubContractList',
+    method: 'get',
+    params: data,
+  })
+}
+
+// 创建子合同
+export function createSubContract(data) {
+  return request({
+    url: '/api/SubContract/CreateSubContract',
+    method: 'post',
+    data
+  })
+}
+
+// 获取子合同详情
+export function getSubContractDetail(data) {
+  return request({
+    url: '/api/SubContract/GetSubContractDetail',
+    method: 'get',
+    params: data,
+  })
+}
+
+// 修改子合同详情
+export function editSubContract(data) {
+  return request({
+    url: '/api/SubContract/EditSubContract',
+    method: 'post',
+    data
+  })
+}
+
+
+// 删除子合同详情
+export function deleteSubContract(data) {
+  return request({
+    url: '/api/SubContract/DeleteSubContract',
+    method: 'post',
+    data
+  })
+}
+
+
+
+
+
+
+

@@ -119,6 +119,12 @@ export const constantRoutes = [
         name: '合同基本信息',
         meta: { title: '合同基本信息' }
       },
+      {
+        path: 'contract/sub/create',
+        component: (resolve) => require(['@/views/business/contract/sub/create.vue'], resolve),
+        name: '编辑子合同',
+        meta: { title: '编辑子合同' }
+      },
     ]
   },
   {

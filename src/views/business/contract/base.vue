@@ -80,6 +80,43 @@
         </el-form-item>
       </el-card>
 
+      <el-card class="contract-base-box" v-if="contractCode">
+        <div slot="header" class="contract-title">
+          <span>子合同信息</span>
+          <el-button type="primary" size="small" style="margin-left: 20px;" @click="handleAddSubContract()" v-if="!isAduit">添加子合同</el-button>
+        </div>
+        <el-table :data="subContractList">
+          <el-table-column label="子合同编号" prop="subContractCode"></el-table-column>
+          <el-table-column label="名称" prop="name"></el-table-column>
+          <el-table-column label="采购时间" prop="purchaseDate">
+            <template slot-scope="scope">
+              <span>{{ parseTime(scope.row.purchaseDate) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="支付日期" prop="payDate">
+            <template slot-scope="scope">
+              <span>{{ parseTime(scope.row.payDate) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="支付方式" prop="payWay"></el-table-column>
+          <el-table-column label="支付金额" prop="payAmount"></el-table-column>
+          <el-table-column label="采购数量" prop="purchaseNumber"></el-table-column>
+          <el-table-column label="已收数量" prop="quantityReceived"></el-table-column>
+          <el-table-column label="创建日期" prop="createDate">
+            <template slot-scope="scope">
+              <span>{{ parseTime(scope.row.createDate) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" v-if="!isAduit">
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="handleEditSubContract(scope.row.subContractCode)">编辑</el-button>
+              <br />
+              <el-button type="text" size="small" @click="deleteSubContractFn(scope.row.subContractCode)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-card>
+
       <el-card class="contract-base-box">
         <!-- 按钮操作模块 -->
         <div>
@@ -101,7 +138,7 @@
 
 <script>
 import { listProject } from "@/api/business/project.js";
-import { updateContract, addContract, aduitContract, queryAduitContractRecord, getContractDetail, cancelApply } from "@/api/business/contract.js";
+import { updateContract, addContract, aduitContract, queryAduitContractRecord, getContractDetail, cancelApply, deleteSubContract, getSubContractList } from "@/api/business/contract.js";
 import { getFlowDic } from '@/api/tool/aduitStream.js';
 import aduitDialog from '../aduit-dialog.vue';
 
@@ -134,6 +171,8 @@ export default {
       aduitContractRecord: [], // 所有的审核记录
       visible: false, // 审核结果
       contractAduitStatusList: [], // 审核可选项
+
+      subContractList: [], // 子合同列表
     }
   },
   created() {
@@ -165,6 +204,7 @@ export default {
       this.getProjectList();
       if (this.contractCode) {
         this.getContractDetailFn();
+        this.getSubContractListFn();
       }
     },
     // 获取合同类型枚举
@@ -356,6 +396,64 @@ export default {
           this.$router.back();
         })
       })
+    },
+
+    /* 子合同模块 */
+    
+    // 获取子合同列表
+    getSubContractListFn() {
+      const { contractCode } = this;
+      const params = {
+        contractCode,
+        pageIndex: 1,
+        pageSize: 9999,
+      };
+      getSubContractList(params).then(res => {
+        this.subContractList = res.data;
+      })
+    },
+
+    // 添加子合同-前往创建子合同
+    handleAddSubContract() {
+      const { contractCode } = this;
+      this.$router.push({
+        path: '/business/contract/sub/create',
+        query: {
+          contractCode,
+        }
+      })
+    },
+
+    // 添加子合同-前往创建子合同
+    handleEditSubContract(subContractCode) {
+      const { contractCode } = this;
+      this.$router.push({
+        path: '/business/contract/sub/create',
+        query: {
+          contractCode,
+          subContractCode,
+        }
+      })
+    },
+
+    // 删除子合同
+    deleteSubContractFn(subContractCode) {
+      const { contractCode } = this;
+      const params = {
+        contractCode,
+        subContractCode,
+      };
+      this.$confirm('是否确认删除子合同编号为"' + subContractCode + '"的数据项?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function() {
+          return deleteSubContract(params);
+        }).then(() => {
+          this.getSubContractListFn();
+          this.msgSuccess("删除成功");
+        }).catch(function() {});
+
     },
   },
 }
