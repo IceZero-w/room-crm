@@ -1,6 +1,54 @@
 import request from '@/utils/request'
 import { praseStrEmpty } from "@/utils/ruoyi";
 
+
+/* 日志模块 */
+// 查询项目列表
+export function getWorkLogList(data) {
+  return request({
+    url: '/api/WorkLog/GetContractList',
+    method: 'get',
+    params: data,
+  })
+}
+
+// 创建工作日志
+export function createWorkLog(data) {
+  return request({
+    url: '/api/WorkLog/CreateWorkLog',
+    method: 'post',
+    data
+  })
+}
+
+// 获取日志详情
+export function getWorkLogDetail(data) {
+  return request({
+    url: '/api/WorkLog/GetWorkLogDetail',
+    method: 'get',
+    params: data,
+  })
+}
+
+// 编辑日志详情
+export function editWorkLog(data) {
+  return request({
+    url: '/api/WorkLog/EditWorkLog',
+    method: 'post',
+    data
+  })
+}
+
+// 删除工作日志
+export function deleteWorkLog(data) {
+  return request({
+    url: '/api/WorkLog/DeleteWorkLog',
+    method: 'post',
+    data
+  })
+}
+
+
 // 查询用户列表
 export function listUser(query) {
   return request({

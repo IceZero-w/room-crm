@@ -67,11 +67,6 @@
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-          </el-form-item>
-        </el-form>
-
-        <el-row :gutter="10" class="mb8">
-          <el-col :span="1.5">
             <el-button
               type="primary"
               icon="el-icon-plus"
@@ -79,8 +74,8 @@
               @click="handleAdd"
               v-hasPermi="['system:user:add']"
             >新增用户</el-button>
-          </el-col>
-        </el-row>
+          </el-form-item>
+        </el-form>
 
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <!-- <el-table-column type="selection" width="40" align="center" /> -->

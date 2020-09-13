@@ -20,6 +20,7 @@ export default {
 	},
 	data() {
 		return {
+			hideOperateBtn: true,
 			loading: false,
 			contractTypeList: [],
 			dataList: [],

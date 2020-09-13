@@ -31,7 +31,7 @@
 			</template>
 		</el-table-column>
 		
-		<el-table-column label="操作" v-if="hideOperateBtn">
+		<el-table-column label="操作" v-if="!hideOperateBtn">
 			<template slot-scope="scope">
 				<el-button
 					size="mini"
@@ -39,7 +39,6 @@
 					icon="el-icon-edit"
 					@click="handleUpdate(scope.row)"
 				>编辑</el-button>
-				<br>
 				<el-button
 					size="mini"
 					type="text"
