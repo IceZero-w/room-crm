@@ -137,6 +137,20 @@ export const constantRoutes = [
         name: '编辑子合同',
         meta: { title: '编辑子合同' }
       },
+
+      // 发票相关
+      {
+        path: 'invoice/base',
+        component: (resolve) => require(['@/views/business/invoice/base.vue'], resolve),
+        name: '发票基本信息',
+        meta: { title: '发票基本信息' }
+      },
+      {
+        path: 'invoice/sub/create',
+        component: (resolve) => require(['@/views/business/invoice/sub/create.vue'], resolve),
+        name: '编辑子发票',
+        meta: { title: '编辑子发票' }
+      },
     ]
   },
   {
