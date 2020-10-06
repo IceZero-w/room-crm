@@ -292,9 +292,10 @@ export default {
         response => {
           this.roleList = response.data || [];
           // this.total = response.total;
-          this.loading = false;
         }
-      );
+      ).finally(() => {
+        this.loading = false;
+      });
     },
     // 岗位状态字典翻译
     isEnableFormat(row, column) {

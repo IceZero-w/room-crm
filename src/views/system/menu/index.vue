@@ -242,6 +242,7 @@ export default {
       this.loading = true;
       listMenu(this.queryParams).then(response => {
         this.menuList = this.handleTree(response.data, "menuId", 'parentMenuId');
+      }).finally(() => {
         this.loading = false;
       });
     },

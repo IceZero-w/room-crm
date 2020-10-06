@@ -181,7 +181,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item v-if="!form.id" label="年龄" prop="age">
-              <el-input v-model.number="form.age" placeholder="请输入用户密码" type="age" />
+              <el-input v-model.number="form.age" placeholder="请输入年龄" type="age" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -436,9 +436,10 @@ export default {
       listUser(params).then(response => {
           this.userList = response.data;
           this.totalCount = response.totalCount;
-          this.loading = false;
         }
-      );
+      ).finally(() => {
+        this.loading = false;
+      });
     },
     /** 查询部门下拉树结构 */
     getDeptTreeselect() {
@@ -573,7 +574,8 @@ export default {
     submitForm: function() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (!(this.form.departmentId && this.form.roleId)) {
+          console.log(this.form.roleId, this.form.departmentId)
+          if (!this.form.roleId && !this.form.departmentId) {
             this.msgError('角色和部门必须选一项哟');
             return;
           }

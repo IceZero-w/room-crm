@@ -238,6 +238,7 @@ export default {
       listPost(this.queryParams).then(response => {
         this.postList = response.data;
         // this.total = response.total;
+      }).finally(() => {
         this.loading = false;
       });
     },

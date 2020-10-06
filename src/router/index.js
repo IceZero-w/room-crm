@@ -81,6 +81,30 @@ export const constantRoutes = [
   //       name: '用户管理',
   //       meta: { title: '用户管理' }
   //     },
+  //     {
+  //       path: 'menu',
+  //       component: (resolve) => require(['@/views/system/menu/index.vue'], resolve),
+  //       name: '菜单管理',
+  //       meta: { title: '菜单管理' }
+  //     },
+  //     {
+  //       path: 'role',
+  //       component: (resolve) => require(['@/views/system/role/index.vue'], resolve),
+  //       name: '角色管理',
+  //       meta: { title: '角色管理' }
+  //     },
+  //     {
+  //       path: 'dept',
+  //       component: (resolve) => require(['@/views/system/dept/index.vue'], resolve),
+  //       name: '部门管理',
+  //       meta: { title: '部门管理' }
+  //     },
+  //     {
+  //       path: 'post',
+  //       component: (resolve) => require(['@/views/system/post/index.vue'], resolve),
+  //       name: '岗位管理',
+  //       meta: { title: '岗位管理' }
+  //     },
   //   ]
   // },
   {

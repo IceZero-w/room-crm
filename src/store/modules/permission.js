@@ -1,6 +1,5 @@
 // 获取当前用户的菜单路由
 import { constantRoutes } from '@/router' // 基本路由
-import { getRouters } from '@/api/menu' // 获取用户能访问的路由
 import Layout from '@/layout/index' // 整个crm框架组件
 
 const permission = {

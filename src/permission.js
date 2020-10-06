@@ -33,7 +33,7 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      if (store.getters.permissions && store.getters.permissions.length) {
+      if ((store.getters.permission_routes && store.getters.permission_routes.length) || (store.getters.permissions && store.getters.permissions.length)) {
         // 用户信息已经获取后，在跳转页面，就不需要重新获取用户信息
         next();
       } else {
