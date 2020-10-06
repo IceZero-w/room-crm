@@ -31,6 +31,7 @@ export default {
 	},
 	data() {
 		return {
+			hideOperateBtn: true,
 			loading: false,
 			contractTypeList: [],
 			dataList: [],
@@ -65,7 +66,7 @@ export default {
     handleUpdate(row) {
       const { contractCode } = row;
       this.$router.push({
-        path: './base',
+        path: '/business/contract/base',
         query: {
           contractCode,
         },

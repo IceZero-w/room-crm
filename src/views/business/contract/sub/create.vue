@@ -44,20 +44,6 @@
 					<el-input class="ip-w200" size="mini" v-model.number="subContractForm.quantityReceived" placeholder="请输入已收数量"></el-input>
 				</el-form-item>
 			</el-card>
-      <el-card class="contract-base-box">
-				<div slot="header" class="contract-title">
-          <span>子合同相关图片信息</span>
-        </div>
-				<!-- <el-upload
-					class="avatar-uploader"
-					action="https://jsonplaceholder.typicode.com/posts/"
-					:show-file-list="false"
-					:on-success="onSuccess"
-					:before-upload="beforeUpload">
-					<img v-if="imageUrl" :src="imageUrl" class="avatar">
-					<i v-else class="el-icon-plus avatar-uploader-icon"></i>
-				</el-upload> -->
-      </el-card>
 			<el-card class="contract-base-box">
         <!-- 按钮操作模块 -->
         <div>

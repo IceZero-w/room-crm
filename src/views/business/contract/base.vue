@@ -9,7 +9,7 @@
             <div class="ip-w200">{{ contractCode }}</div>
           </el-form-item>
           <el-form-item label="所属项目" prop="projectCode">
-            <el-select class="ip-w200" v-model="contractForm.projectCode" :disabled="isAduit">
+            <el-select class="ip-w200" v-model="contractForm.projectCode" :disabled="isAduit || !!contractCode">
               <el-option v-for="(item, index) in projectList" :label="item.projectName" :value="item.projectCode" :key="index"></el-option>
             </el-select>
           </el-form-item>
@@ -63,7 +63,7 @@
           <span>审核信息</span>
         </div>
         <el-form-item label="关联工作流" prop="flowCode">
-          <el-select class="ip-w200" v-model="contractForm.flowCode" placeholder="请选择" size="mini" :disabled="isAduit">
+          <el-select class="ip-w200" v-model="contractForm.flowCode" placeholder="请选择" size="mini" :disabled="isAduit || !!contractCode">
             <el-option
               v-for="(item, index) in flowCodeList"
               :key="index"
@@ -73,10 +73,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="审核状态" prop="auditStates">
-          <div>
+          <div v-if="contractCode">
             <span v-if="contractForm.auditStates === 1">业务员审核</span>
             <span v-else>{{ contractForm.auditName }}(已审核)</span>
           </div>
+          <div v-else>--</div>
         </el-form-item>
       </el-card>
 

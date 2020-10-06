@@ -1,13 +1,24 @@
 <template>
-	<contractTable :loading="loading" :dataList="dataList"></contractTable>
+	<invoiceTable :loading="loading" :dataList="dataList" :hideOperateBtn="hideOperateBtn">
+		<el-table-column label="操作">
+			<template slot-scope="scope">
+				<el-button
+					size="mini"
+					type="text"
+					icon="el-icon-edit"
+					@click="handleUpdate(scope.row)"
+				>查看</el-button>
+			</template>
+		</el-table-column>
+	</invoiceTable>
 </template>
 <script>
-import { listContract } from "@/api/business/contract.js";
-import contractTable from '@/components/contract/contract-table.vue'
+import { listInvoice } from "@/api/business/invoice.js";
+import invoiceTable from '@/components/invoice/invoice-table.vue'
 
 export default {
 	components: {
-		contractTable,
+		invoiceTable,
 	},
 	props: {
 		projectCode: {
@@ -20,8 +31,9 @@ export default {
 	},
 	data() {
 		return {
+			hideOperateBtn: true,
 			loading: false,
-			contractTypeList: [],
+			invoiceTypeList: [],
 			dataList: [],
 		}
 	},
@@ -34,9 +46,9 @@ export default {
     initAssetData() {},
     // 初始化远程数据
     initRemoteData() {
-			this.getContractListFn();
+			this.getInvoiceListFn();
 		},
-		getContractListFn() {
+		getInvoiceListFn() {
       this.loading = true;
 			const { projectCode } = this;
 			const params = {
@@ -44,11 +56,21 @@ export default {
 				pageIndex: 1,
         pageSize: 9999,
 			};
-			listContract(params).then(response => {
+			listInvoice(params).then(response => {
         this.dataList = response.data;
         this.loading = false;
       });
-		}
+		},
+		// 编辑合同基本信息
+    handleUpdate(row) {
+      const { invoiceCode } = row;
+      this.$router.push({
+        path: '/business/invoice/base',
+        query: {
+          invoiceCode,
+        },
+      });
+    },
 		
 	}
 }

@@ -108,6 +108,31 @@ export const constantRoutes = [
   //   ]
   // },
   {
+    path: '/system',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'user/profile',
+        component: (resolve) => require(['@/views/system/user/profile/index'], resolve),
+        name: 'Profile',
+        meta: { title: '个人中心', icon: 'user' }
+      },
+      // {
+      //   path: 'user/work-log',
+      //   component: (resolve) => require(['@/views/system/user/work-log/index'], resolve),
+      //   name: 'WorkLog',
+      //   meta: { title: '工作日志', icon: 'user' }
+      // },
+      {
+        path: 'user/work-log/detail',
+        component: (resolve) => require(['@/views/system/user/work-log/detail'], resolve),
+        name: 'WorkLog',
+        meta: { title: '日志详情', icon: 'user' }
+      },
+    ]
+  },
+  {
     path: '/business',
     component: Layout,
     hidden: true,
@@ -148,6 +173,14 @@ export const constantRoutes = [
         component: (resolve) => require(['@/views/business/contract/sub/create.vue'], resolve),
         name: '编辑子合同',
         meta: { title: '编辑子合同' }
+      },
+
+      // 发票相关
+      {
+        path: 'invoice/base',
+        component: (resolve) => require(['@/views/business/invoice/base.vue'], resolve),
+        name: '发票基本信息',
+        meta: { title: '发票基本信息' }
       },
     ]
   },

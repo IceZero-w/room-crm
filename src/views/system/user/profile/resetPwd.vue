@@ -1,10 +1,10 @@
 <template>
   <el-form ref="form" :model="user" :rules="rules" label-width="80px">
-    <el-form-item label="旧密码" prop="oldPassword">
-      <el-input v-model="user.oldPassword" placeholder="请输入旧密码" type="password" />
+    <el-form-item label="旧密码" prop="loginPassword">
+      <el-input v-model="user.loginPassword" placeholder="请输入旧密码" type="password" />
     </el-form-item>
-    <el-form-item label="新密码" prop="newPassword">
-      <el-input v-model="user.newPassword" placeholder="请输入新密码" type="password" />
+    <el-form-item label="新密码" prop="newLoginPassword">
+      <el-input v-model="user.newLoginPassword" placeholder="请输入新密码" type="password" />
     </el-form-item>
     <el-form-item label="确认密码" prop="confirmPassword">
       <el-input v-model="user.confirmPassword" placeholder="请确认密码" type="password" />
@@ -17,12 +17,18 @@
 </template>
 
 <script>
-import { updateUserPwd } from "@/api/system/user";
+import { resetPwd } from '@/api/login'
 
 export default {
+  props: {
+    userInfo: {
+      type: Object,
+      default: () => {},
+    }
+  },
   data() {
     const equalToPassword = (rule, value, callback) => {
-      if (this.user.newPassword !== value) {
+      if (this.user.newLoginPassword !== value) {
         callback(new Error("两次输入的密码不一致"));
       } else {
         callback();
@@ -31,16 +37,16 @@ export default {
     return {
       test: "1test",
       user: {
-        oldPassword: undefined,
-        newPassword: undefined,
+        loginPassword: undefined,
+        newLoginPassword: undefined,
         confirmPassword: undefined
       },
       // 表单校验
       rules: {
-        oldPassword: [
+        loginPassword: [
           { required: true, message: "旧密码不能为空", trigger: ["blur","change"] }
         ],
-        newPassword: [
+        newLoginPassword: [
           { required: true, message: "新密码不能为空", trigger: ["blur","change"] },
           { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: ["blur","change"] }
         ],
@@ -55,12 +61,20 @@ export default {
     submit() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          updateUserPwd(this.user.oldPassword, this.user.newPassword).then(
-            response => {
-              if (response.code === 200) {
-                this.msgSuccess("修改成功");
-              } else {
-                this.msgError(response.msg);
+          const { telePhone: loginAccount } = this.userInfo;
+          const { loginPassword, newLoginPassword, confirmPassword } = this.user;
+          const params = {
+            loginAccount,
+            loginPassword,
+            newLoginPassword,
+            confirmPassword,
+          }
+          resetPwd(params).then(
+            res => {
+              if (res.code === 200) {
+                this.$message.success({
+                  message: '密码重置成功',
+                });
               }
             }
           );

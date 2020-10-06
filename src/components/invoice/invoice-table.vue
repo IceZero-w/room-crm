@@ -1,35 +1,31 @@
 <template>
 	<el-table v-loading="loading" :data="dataList">
 		<el-table-column label="关联项目编号" prop="projectCode"></el-table-column>
-		<el-table-column label="合同编号" prop="contractCode"></el-table-column>
-		<el-table-column label="合同名称" prop="contractName"></el-table-column>
-		<el-table-column label="合同类型" prop="contractType" :formatter="isEnableFormat"></el-table-column>
-		<el-table-column label="合同金额" prop="contractMoney">
+		<el-table-column label="发票编号" prop="invoiceCode"></el-table-column>
+		<!-- <el-table-column label="发票名称" prop="invoiceName"></el-table-column> -->
+		<el-table-column label="发票开票说明" prop="invoiceExplain"></el-table-column>
+		<el-table-column label="发票金额" prop="invoiceAmount">
 			<template slot-scope="scope">
-				<span>{{ getPrice(scope.row.contractMoney) }}</span>
+				<span>{{ getPrice(scope.row.invoiceAmount) }}</span>
 			</template>
 		</el-table-column>
-		<el-table-column label="是否含税" prop="isTax">
+		<el-table-column label="发票开票日期" prop="invoiceDate">
 			<template slot-scope="scope">
-				<span>{{ scope.row.isTax ? '是' : '否' }}</span>
+				<span>{{ parseTime(scope.row.invoiceDate) }}</span>
 			</template>
 		</el-table-column>
-		<el-table-column label="创建时间" prop="createDate">
-			<template slot-scope="scope">
-				<span>{{ parseTime(scope.row.createDate) }}</span>
-			</template>
-		</el-table-column>
-		<el-table-column label="签约时间" prop="signerDate">
-			<template slot-scope="scope">
-				<span>{{ parseTime(scope.row.signerDate) }}</span>
-			</template>
-		</el-table-column>
-		<el-table-column label="合同状态" prop="auditName">
+		<el-table-column label="发票状态" prop="auditName">
 			<template slot-scope="scope">
 				<span v-if="scope.row.auditStates === 1">业务员审核</span>
 				<span v-else>{{ scope.row.auditName }}(已审核)</span>
 			</template>
 		</el-table-column>
+		<el-table-column label="创建人" prop="createUserName">
+			<template slot-scope="scope">
+				<span>{{ scope.row.createUserName || '--' }}</span>
+			</template>
+		</el-table-column>
+		
 		
 		<el-table-column label="操作" v-if="!hideOperateBtn">
 			<template slot-scope="scope">
@@ -80,7 +76,6 @@ export default {
 	},
 	data() {
 		return {
-			contractTypeList: [],
 		}
 	},
 	methods: {
@@ -90,35 +85,9 @@ export default {
     },
     // 初始化静态数据
     initAssetData() {
-      this.getContractTypeList();
     },
     // 初始化远程数据
     initRemoteData() {},
-		// 获取合同类型列表
-    getContractTypeList() {
-      const data = [
-        {
-          dictLabel: '劳务合同',
-          dictValue: 1,
-        },
-        {
-          dictLabel: '材料合同',
-          dictValue: 2,
-        },
-        {
-          dictLabel: '租赁合同',
-          dictValue: 3,
-        },
-        {
-          dictLabel: '其他合同',
-          dictValue: 4,
-        },
-      ]
-      this.contractTypeList = data;
-    },
-		isEnableFormat(row, column) {
-      return this.selectDictLabel(this.contractTypeList, row.contractType);
-		},
 		handleUpdate(row) {
 			this.$emit('handleUpdate', row)
 		},
