@@ -280,7 +280,7 @@ export default {
         }
       });
     },
-    // 编辑项目
+    // 修改项目
     handleUpdate(params) {
       updateProject(params).then(response => {
         this.msgSuccess("修改成功");

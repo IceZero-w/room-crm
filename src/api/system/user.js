@@ -30,7 +30,7 @@ export function getWorkLogDetail(data) {
   })
 }
 
-// 编辑日志详情
+// 修改日志详情
 export function editWorkLog(data) {
   return request({
     url: '/api/WorkLog/EditWorkLog',
@@ -80,10 +80,11 @@ export function updateUser(data) {
 }
 
 // 删除用户
-export function delUser(userId) {
+export function delUser(data) {
   return request({
-    url: '/system/user/' + userId,
-    method: 'delete'
+    url: '/api/SysUsers/DeleteUser',
+    method: 'post',
+    data: data
   })
 }
 

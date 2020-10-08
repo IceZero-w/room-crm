@@ -66,7 +66,7 @@ export function aduitInvoice(data) {
   })
 }
 
-// 取消审核，让合同可编辑
+// 取消审核，让合同可修改
 export function cancelApply(data) {
   return request({
     url: '/api/Invoice/InvoiceCancelAudit',

@@ -210,7 +210,7 @@ export default {
         }
       });
     },
-    // 编辑发票
+    // 修改发票
     handleUpdate(params) {
       updateInvoice(params).then(response => {
         this.msgSuccess("修改成功");

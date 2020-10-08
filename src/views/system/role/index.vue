@@ -73,7 +73,7 @@
             type="text"
             icon="el-icon-unlock"
             @click="handleRoleMenu(scope.row)"
-            v-hasPermi="['system:role:hasPermi']"
+            v-hasPermi="['system:role:setPermis']"
           >设置角色权限</el-button>
         </template>
       </el-table-column>
@@ -158,6 +158,7 @@
             node-key="id"
             empty-text="加载中，请稍后"
             :props="defaultProps"
+            :default-expand-all="true"
           ></el-tree>
         </el-form-item>
       </el-form>
@@ -417,11 +418,16 @@ export default {
       this.roleWithMenuDialog = true;
       await this.getMenuTreeselect();
       getRoleMenuList({ roleId }).then(res => {
-        if (res.code === 200) {
-          const checkedKeys = res.data.map((item) => item.id) || [];
+        const checkedKeys= []
+        if (res.data && res.data.length) {
+          res.data.forEach((item) => {
+            item.childrenList && item.childrenList.length && item.childrenList.forEach(itemSon => {
+              checkedKeys.push(itemSon.id)
+            })
+          });
           this.$refs.menu.setCheckedKeys(checkedKeys);
         } else {
-          this.$refs.menu.setCheckedKeys([]);
+          this.$refs.menu.setCheckedKeys(checkedKeys);
         }
       })
     },

@@ -19,7 +19,7 @@ export function createFlowType(data) {
   })
 }
 
-// 编辑工作流类型
+// 修改工作流类型
 export function editFlowType(data) {
   return request({
     url: '/api/FlowType/EditFlowType',
@@ -28,7 +28,7 @@ export function editFlowType(data) {
   })
 }
 
-// 编辑工作流类型
+// 修改工作流类型
 export function deleteFlowType(data) {
   return request({
     url: '/api/FlowType/DeleteFlowType',
@@ -58,7 +58,7 @@ export function createFlow(data) {
 }
 
 
-// 编辑工作流
+// 修改工作流
 export function editFlow(data) {
   return request({
     url: '/api/Flow/EditFlow',
@@ -67,7 +67,7 @@ export function editFlow(data) {
   })
 }
 
-// 编辑工作流
+// 修改工作流
 export function deleteFlow(data) {
   return request({
     url: '/api/Flow/DeleteFlow',
@@ -105,7 +105,7 @@ export function createFlowNode(data) {
   })
 }
 
-// 编辑工作流子节点
+// 修改工作流子节点
 export function editFlowNode(data) {
   return request({
     url: '/api/FlowNode/EditFlowNode',

@@ -80,7 +80,7 @@ export default {
     };
   },
   methods: {
-    // 编辑头像
+    // 修改头像
     editCropper() {
       this.open = true;
     },

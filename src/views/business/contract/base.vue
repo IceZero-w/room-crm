@@ -84,7 +84,7 @@
       <el-card class="contract-base-box" v-if="contractCode">
         <div slot="header" class="contract-title">
           <span>子合同信息</span>
-          <el-button type="primary" size="small" style="margin-left: 20px;" @click="handleAddSubContract()" v-if="!isAduit">添加子合同</el-button>
+          <el-button type="primary" size="small" style="margin-left: 20px;" @click="handleAddSubContract()" v-if="!isAduit" v-hasPermi="['business:contract:base:addSub']">添加子合同</el-button>
         </div>
         <el-table :data="subContractList">
           <el-table-column label="子合同编号" prop="subContractCode"></el-table-column>
@@ -110,9 +110,9 @@
           </el-table-column>
           <el-table-column label="操作" v-if="!isAduit">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="handleEditSubContract(scope.row.subContractCode)">编辑</el-button>
+              <el-button type="text" size="small" @click="handleEditSubContract(scope.row.subContractCode)" v-hasPermi="['business:contract:base:editSub']">修改</el-button>
               <br />
-              <el-button type="text" size="small" @click="deleteSubContractFn(scope.row.subContractCode)">删除</el-button>
+              <el-button type="text" size="small" @click="deleteSubContractFn(scope.row.subContractCode)" v-hasPermi="['business:contract:base:removeSub']">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -324,7 +324,7 @@ export default {
         }
       });
     },
-    // 编辑合同
+    // 修改合同
     handleUpdate(params) {
       updateContract(params).then(response => {
         this.msgSuccess("修改成功");

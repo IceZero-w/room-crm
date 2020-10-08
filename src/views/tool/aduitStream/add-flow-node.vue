@@ -10,17 +10,20 @@
                 size="mini"
                 icon="el-icon-edit"
                 @click="handleUpdate(item)"
+                v-hasPermi="['tool:aduitStream:flow-list:editSubNode']"
               >修改</el-button>
               <el-button
                 size="mini"
                 icon="el-icon-edit"
                 @click="doAuthorUser(item)"
+                v-hasPermi="['tool:aduitStream:flow-list:disSubNodeUser']"
               >分配工作流用户</el-button>
               <el-button
                 size="mini"
                 type="danger"
                 icon="el-icon-delete"
                 @click="handleDelete(item)"
+                v-hasPermi="['tool:aduitStream:flow-list:removeSubNode']"
               >删除</el-button>
             </div>
           </el-card>
@@ -28,7 +31,7 @@
       </el-timeline>
     </template>
     <el-card :style="flowNodeList.length ? 'margin-left: 70px' : ''">
-      <el-button type="primary" icon="el-icon-plus" @click="addFlowStream()">添加新子节点</el-button>
+      <el-button type="primary" icon="el-icon-plus" @click="addFlowStream()" v-hasPermi="['tool:aduitStream:flow-list:addSubNode']">添加新子节点</el-button>
       <el-button @click="$router.back()">返回</el-button>
     </el-card>
     <addFlowNodeDialog :visible.sync="createVisible" :flowNodeInfo="flowNodeInfo" @refreshList="getFlowNodeListFn"></addFlowNodeDialog>
@@ -52,7 +55,7 @@ export default {
       flowCode: undefined, // 工作流code
 
       flowNodeList: [], // 审核流数据
-      flowNodeInfo: {}, // 编辑时节点基础信息
+      flowNodeInfo: {}, // 修改时节点基础信息
 
     };
   },
@@ -90,7 +93,7 @@ export default {
       this.createVisible = true;
     },
 
-    // 编辑工作流子节点
+    // 修改工作流子节点
     handleUpdate(item) {
       this.flowNodeInfo = {
         flowCode: this.flowCode,

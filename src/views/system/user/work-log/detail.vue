@@ -18,7 +18,7 @@
           <div class="img-box" v-for="(item, index) in workLogForm.imageUrls" :key="index">
             <img
               class="img-dom"
-              :src="cdnImgUrl + item" alt=""
+              :src="item" alt=""
             >
             <div class="img-box-hover">
               <span
@@ -54,7 +54,7 @@
               <i slot="default" class="el-icon-plus"></i>
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="cdnImgUrl + dialogImageUrl" alt="">
+            <img width="100%" :src="dialogImageUrl" alt="">
           </el-dialog>
         </el-form-item>
         <el-form-item label="日志内容" prop="workLogContent">
@@ -80,7 +80,6 @@ const baseURL = process.env.VUE_APP_BASE_API
 export default {
   data() {
     return {
-      cdnImgUrl: location.origin,
       baseURL,
       isRequesting: false, // 接口请求中
       workLogCode: undefined,
@@ -160,7 +159,7 @@ export default {
         }
       });
     },
-    // 编辑项目
+    // 修改项目
     handleUpdate(params) {
       editWorkLog(params).then(response => {
         this.msgSuccess("修改成功");
@@ -196,7 +195,7 @@ export default {
     // 图片下载
     handleDownload(index) {
       const imgUrl = this.workLogForm.imageUrls[index];
-      window.open(`${this.cdnImgUrl + imgUrl}`)
+      window.open(`${imgUrl}`)
     },
     // 图片删除
     handleRemove(index) {

@@ -110,13 +110,14 @@
                 @click="handleUpdate(scope.row)"
                 v-hasPermi="['system:user:edit']"
               >修改</el-button>
-              <!-- <el-button
+              <el-button
                 v-if="scope.row.id !== 1"
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
                 @click="handleDelete(scope.row)"
-              >删除</el-button> -->
+                v-hasPermi="['system:user:remove']"
+              >删除</el-button>
               <el-button
                 size="mini"
                 type="text"
@@ -605,13 +606,16 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const ids = row.id || this.ids;
-      this.$confirm('是否确认删除用户编号为"' + ids + '"的数据项?', "警告", {
+      const { id } = row;
+      const params = {
+        userId: id
+      }
+      this.$confirm('是否确认删除用户编号为"' + id + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delUser(ids);
+          return delUser(params);
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");

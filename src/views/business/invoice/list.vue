@@ -25,7 +25,7 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-        <el-button type="success" icon="el-icon-add" size="mini" @click="handleAdd">添加新发票</el-button>
+        <el-button type="success" icon="el-icon-plus" size="mini" @click="handleAdd" v-hasPermi="['business:invoice:list:add']">添加新发票</el-button>
       </el-form-item>
     </el-form>
     <invoiceTable :loading="loading" :dataList="projectList" @handleUpdate="handleUpdate" @handleAduit="handleAduit" @handleDelete="handleDelete"></invoiceTable>
@@ -106,7 +106,7 @@ export default {
       });
     },
 
-    // 编辑发票基本信息
+    // 修改发票基本信息
     handleUpdate(row) {
       const { invoiceCode } = row;
       this.$router.push({

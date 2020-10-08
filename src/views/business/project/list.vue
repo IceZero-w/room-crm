@@ -47,7 +47,7 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-        <el-button type="success" icon="el-icon-add" size="mini" @click="handleAdd">添加新项目</el-button>
+        <el-button type="success" icon="el-icon-plus" size="mini" @click="handleAdd" v-hasPermi="['business:project:list:add']">添加新项目</el-button>
       </el-form-item>
     </el-form>
     <el-table v-loading="loading" :data="projectList">
@@ -83,19 +83,22 @@
               type="text"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
-            >编辑</el-button>
+              v-hasPermi="['business:project:list:edit']"
+            >修改</el-button>
             <br>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-aim"
             @click="handleAduit(scope.row)"
+            v-hasPermi="['business:project:list:aduit']"
           >审核</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
+            v-hasPermi="['business:project:list:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -209,7 +212,7 @@ export default {
       })
     },
 
-    // 编辑项目基本信息
+    // 修改项目基本信息
     handleUpdate(row) {
       const { projectCode } = row;
       this.$router.push({

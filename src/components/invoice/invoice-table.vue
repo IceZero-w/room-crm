@@ -34,12 +34,14 @@
 					type="text"
 					icon="el-icon-edit"
 					@click="handleUpdate(scope.row)"
-				>编辑</el-button>
+					v-hasPermi="['business:invoice:list:edit']"
+				>修改</el-button>
 				<el-button
 					size="mini"
 					type="text"
 					icon="el-icon-aim"
 					@click="handleAduit(scope.row)"
+					v-hasPermi="['business:invoice:list:aduit']"
 				>审核</el-button>
 				<br>
 				<el-button
@@ -47,6 +49,7 @@
 					type="text"
 					icon="el-icon-delete"
 					@click="handleDelete(scope.row)"
+					v-hasPermi="['business:invoice:list:remove']"
 				>删除</el-button>
 			</template>
 		</el-table-column>

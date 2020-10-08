@@ -75,7 +75,7 @@ export function aduitProject(data) {
 }
 
 
-// 取消审核，让项目可编辑
+// 取消审核，让项目可修改
 export function cancelApply(data) {
   return request({
     url: '/api/Project/ProjectCancelAudit',

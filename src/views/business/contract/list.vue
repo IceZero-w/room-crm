@@ -35,7 +35,7 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-        <el-button type="success" icon="el-icon-add" size="mini" @click="handleAdd">添加新合同</el-button>
+        <el-button type="success" icon="el-icon-plus" size="mini" @click="handleAdd" v-hasPermi="['business:contract:list:add']">添加新合同</el-button>
       </el-form-item>
     </el-form>
     <contractTable :loading="loading" :dataList="projectList" @handleUpdate="handleUpdate" @handleAduit="handleAduit" @handleDelete="handleDelete"></contractTable>
@@ -116,7 +116,7 @@ export default {
       });
     },
 
-    // 编辑合同基本信息
+    // 修改合同基本信息
     handleUpdate(row) {
       const { contractCode } = row;
       this.$router.push({

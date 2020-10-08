@@ -126,6 +126,7 @@
             ref="menu"
             node-key="id"
             :props="defaultProps"
+            :default-expand-all="true"
           ></el-tree>
         </el-form-item>
       </el-form>
@@ -375,12 +376,17 @@ export default {
       getPostMenuList({
         postId,
       }).then(res => {
-        if (res.code === 200) {
-          const checkedKeys = res.data.map((item) => item.id) || [];
-          this.$refs.menu.setCheckedKeys(checkedKeys);
-        } else {
-          this.$refs.menu.setCheckedKeys([]);
-        }
+        const checkedKeys = [];
+        if (res.data && res.data.length) {
+            res.data.forEach((item) => {
+              item.childrenList && item.childrenList.length && item.childrenList.forEach(itemSon => {
+                checkedKeys.push(itemSon.id)
+              })
+            });
+            this.$refs.menu.setCheckedKeys(checkedKeys);
+          } else {
+            this.$refs.menu.setCheckedKeys(checkedKeys);
+          }
       });
       this.postWithMenuDialog = true;
     },

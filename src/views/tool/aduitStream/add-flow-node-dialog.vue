@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible="visible" :title="flowNodeInfo.nodeCode ? '编辑子节点' : '新建子节点'" width="800px" @close="closeDialog()">
+  <el-dialog :visible="visible" :title="flowNodeInfo.nodeCode ? '修改子节点' : '新建子节点'" width="800px" @close="closeDialog()">
     <el-form ref="form" :model="form" :rules="rules" label-width="150px">
       <el-form-item label="工作流子节点名称" prop="nodeName">
         <el-input v-model="form.nodeName"></el-input>

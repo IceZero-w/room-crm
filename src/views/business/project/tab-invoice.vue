@@ -61,7 +61,7 @@ export default {
         this.loading = false;
       });
 		},
-		// 编辑合同基本信息
+		// 修改合同基本信息
     handleUpdate(row) {
       const { invoiceCode } = row;
       this.$router.push({

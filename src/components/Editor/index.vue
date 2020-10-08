@@ -50,7 +50,7 @@ import "quill/dist/quill.bubble.css";
 
 export default {
   props: {
-    /* 编辑器的内容 */
+    /* 修改器的内容 */
     value: {
       type: String
     },

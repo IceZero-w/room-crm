@@ -130,7 +130,7 @@ export default {
         }
       });
 		},
-		// 编辑合同
+		// 修改合同
     handleUpdate(params) {
       editSubContract(params).then(response => {
         this.msgSuccess("修改成功");

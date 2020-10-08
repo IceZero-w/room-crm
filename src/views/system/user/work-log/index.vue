@@ -25,7 +25,7 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-        <el-button type="success" icon="el-icon-add" size="mini" @click="handleAdd">添加日志</el-button>
+        <el-button type="success" icon="el-icon-plus" size="mini" @click="handleAdd">添加日志</el-button>
       </el-form-item>
     </el-form>
     <el-table v-loading="loading" :data="projectList">
@@ -46,7 +46,7 @@
               type="text"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
-            >编辑</el-button>
+            >修改</el-button>
           <el-button
             size="mini"
             type="text"
@@ -128,7 +128,7 @@ export default {
       });
     },
 
-    // 编辑项目基本信息
+    // 修改项目基本信息
     handleUpdate(row) {
       const { workLogCode } = row;
       this.$router.push({

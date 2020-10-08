@@ -140,7 +140,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <!-- 编辑部门菜单权限 -->
+    <!-- 修改部门菜单权限 -->
     <el-dialog title="设置部门权限" :visible.sync="deptWithMenuDialog" width="600px" append-to-body>
       <el-form ref="form" :model="deptWithMenuForm" :rules="rules" label-width="80px">
         <el-row>
@@ -157,6 +157,7 @@
               node-key="id"
               empty-text="加载中，请稍后"
               :props="defaultProps"
+              :default-expand-all="true"
             ></el-tree>
           </el-form-item>
         </el-row>
@@ -455,11 +456,16 @@ export default {
       };
       getDepartmentMenuList(params).then((res) => {
         if (res.code === 200) {
+          const checkedKeys = [];
           if (res.data && res.data.length) {
-            const checkedKeys = res.data.map((item) => item.id);
+            res.data.forEach((item) => {
+              item.childrenList && item.childrenList.length && item.childrenList.forEach(itemSon => {
+                checkedKeys.push(itemSon.id)
+              })
+            });
             this.$refs.menu.setCheckedKeys(checkedKeys);
           } else {
-            this.$refs.menu.setCheckedKeys([]);
+            this.$refs.menu.setCheckedKeys(checkedKeys);
           }
         }
       });
