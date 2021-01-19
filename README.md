@@ -4,7 +4,7 @@
 项目地址：https://github.com/IceZero-w/room-crm.git
 ```
 
-## 项目启动命令
+## 项目本地启服务命令
 ```
 1.git clone https://github.com/IceZero-w/room-crm.git (下载项目到本地)
 2.cd room-crm (进入项目根目录)
