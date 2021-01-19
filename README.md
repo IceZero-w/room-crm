@@ -8,9 +8,16 @@
 ```
 1.git clone https://github.com/IceZero-w/room-crm.git (下载项目到本地)
 2.cd room-crm (进入项目根目录)
-3.yarn install (安装依赖)
-4.yarn dev (本地启动项目)
+3.npm install (安装依赖)
+4.npm run dev (本地启动项目)
+```
 
+## 项目打包命令
+```
+1.npm run build:prod(会生成dist文件夹，放到域名服务器下即可)
+```
+
+```
 ....控制台出现本地服务地址，复制到浏览器访问即可访问页面...
 
 输入：
